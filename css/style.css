@@ -77,6 +77,19 @@ p.lede { color: var(--slate); font-size: 1.05em; }
   letter-spacing: 0.01em; text-decoration: none; color: var(--green-deep);
   text-transform: uppercase; line-height: 1;
 }
+
+/* Product-page lockup: small parent brand + dominant product name */
+.wordmark-lockup {
+  display: flex; flex-direction: column; text-decoration: none; line-height: 1;
+}
+.wordmark-lockup .parent {
+  font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em;
+  color: var(--slate); text-transform: uppercase; margin-bottom: 3px;
+}
+.wordmark-lockup .current {
+  font-family: var(--font-display); font-weight: 900; font-size: 1.5rem;
+  color: var(--accent-deep); text-transform: none; letter-spacing: 0.005em;
+}
 .wordmark span { color: var(--accent); }
 .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
 .nav-links a {
