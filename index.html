@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fieldworks — tools for people who work from the road</title>
+<meta name="description" content="Fieldworks builds simple, offline-first apps for people whose job happens away from a desk — starting with TrackMile, automatic mileage tracking for HMRC claims.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark">Field<span>works</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Tools for people whose job happens from the road, not a desk.</h1>
+      <p class="lede">Fieldworks builds small, offline-first apps for drivers, tradespeople and lone workers — the kind of software that runs quietly in the background and gets the paperwork done without you thinking about it.</p>
+      <div class="cta-row">
+        <a href="trackmile.html" class="btn btn-primary">See TrackMile &rarr;</a>
+        <a href="support.html" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="odometer-card">
+      <div class="odometer-label">Every mile, logged automatically</div>
+      <div class="odometer-digits" aria-hidden="true">
+        <span>0</span><span>0</span><span>0</span><span class="sep">&middot;</span><span>0</span>
+      </div>
+      <div class="odometer-unit">No stopwatch. No spreadsheet. No forgotten trips.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <div class="route">
+        <span class="marker">Mile 1 — Why Fieldworks</span>
+        <span class="line"></span>
+      </div>
+      <div class="two-col">
+        <div>
+          <h2>Built by someone who does the driving too</h2>
+          <p>Fieldworks started as a single mileage tracker, built to solve one person's own HMRC claim headache. It's grown into a small stable of apps for the same kind of work: lone site visits, van rounds, inspections, the jobs where your office is wherever the job is.</p>
+        </div>
+        <div>
+          <h3>What that means in practice</h3>
+          <p class="lede">Every Fieldworks app is built around the same three rules:</p>
+          <ul style="padding-left: 20px; color: var(--ink);">
+            <li style="margin-bottom:8px;"><strong>Offline-first.</strong> Signal drops in a van on a rural lane. The app shouldn't.</li>
+            <li style="margin-bottom:8px;"><strong>Automatic where it can be.</strong> If the phone can work it out, you shouldn't have to type it in.</li>
+            <li><strong>Built for HMRC and UK compliance,</strong> not adapted from a US template afterwards.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps">
+    <div class="wrap">
+      <div class="route">
+        <span class="marker">Mile 2 — The apps</span>
+        <span class="line"></span>
+      </div>
+      <div class="section-head">
+        <h2>Currently in the field</h2>
+        <p>One app is in active development and heading into closed testing. Two more are on the bench.</p>
+      </div>
+
+      <div class="app-grid">
+        <a href="trackmile.html" class="app-card live">
+          <img src="assets/trackmile-icon-512.png" alt="TrackMile app icon" class="app-icon">
+          <div class="status">In development &middot; testing soon</div>
+          <h3>TrackMile</h3>
+          <p>Automatic mileage tracking for HMRC claims — detects trips in the background, applies the right pence-per-mile rate, and exports a claim-ready report.</p>
+          <span class="btn btn-accent" style="align-self:flex-start;">Read more &rarr;</span>
+        </a>
+
+        <div class="app-card stub">
+          <div class="status">In the workshop</div>
+          <h3>Fire Door Inspection</h3>
+          <p>Scheduled inspection rounds, photo evidence and compliance reporting for buildings with fire door obligations.</p>
+        </div>
+
+        <div class="app-card stub">
+          <div class="status">In the workshop</div>
+          <h3>Site Induction</h3>
+          <p>Digital induction and sign-in for lone workers and site visitors, built on the same multi-tenant backend as the rest of the range.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="route">
+        <span class="marker">Mile 3 — Talk to us</span>
+        <span class="line"></span>
+      </div>
+      <div class="contact-card">
+        <h2 style="color: var(--white);">Want to help test TrackMile?</h2>
+        <p style="color: rgba(251,250,246,0.8); margin:0; max-width: 56ch;">Closed testing opens shortly and needs a small group of UK drivers who claim mileage regularly. It's a five-minute install and a few honest notes on what works.</p>
+        <a href="support.html" class="btn btn-accent">Get in touch</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="copy">FIELDWORKS &middot; est. 2026</div>
+    <ul class="foot-links">
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="privacy.html">Privacy policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  const t = document.getElementById('navToggle');
+  const l = document.getElementById('navLinks');
+  if (t) t.addEventListener('click', () => l.classList.toggle('open'));
+
+  // Odometer count-up on load — decorative, not a real usage stat
+  const digits = document.querySelectorAll('.odometer-digits span:not(.sep)');
+  const targets = ['4','2','8','7'];
+  digits.forEach((d, i) => {
+    let n = 0;
+    const target = parseInt(targets[i], 10);
+    const iv = setInterval(() => {
+      n = (n + 1) % 10;
+      d.textContent = n;
+      if (n === target) clearInterval(iv);
+    }, 70 + i * 40);
+  });
+</script>
+</body>
+</html>

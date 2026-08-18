@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support | Fieldworks</title>
+<meta name="description" content="Get in touch with Fieldworks, join TrackMile's closed testing, or find answers to common questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark">Field<span>works</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="support.html" class="active">Support</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" style="padding-bottom: 20px;">
+  <div class="wrap">
+    <h1 style="font-size: clamp(2rem, 4vw, 2.8rem);">Support &amp; contact</h1>
+    <p class="lede" style="max-width: 56ch;">Questions, bug reports, or want to be one of the first testers for TrackMile — this is the place.</p>
+  </div>
+</header>
+
+<main>
+  <section style="padding-top: 0;">
+    <div class="wrap two-col">
+      <div class="contact-card">
+        <h2 style="color: var(--white);">Join TrackMile testing</h2>
+        <p style="color: rgba(251,250,246,0.8); margin:0;">Closed testing is opening on Google Play shortly. We're looking for UK drivers who claim mileage regularly — sole traders, tradespeople, or anyone on a workplace mileage allowance.</p>
+        <a href="mailto:[email protected]?subject=TrackMile%20testing" class="btn btn-accent">[email protected]</a>
+      </div>
+      <div class="contact-card" style="background: var(--paper-high); color: var(--ink); border: 1px solid var(--line);">
+        <h2>General enquiries</h2>
+        <p style="color: var(--slate); margin:0;">Bug reports, feedback, or anything else about a Fieldworks app.</p>
+        <a href="mailto:[email protected]" class="btn btn-ghost" style="align-self:flex-start;">[email protected]</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="route">
+        <span class="marker">FAQ</span>
+        <span class="line"></span>
+      </div>
+      <div class="section-head">
+        <h2>Common questions</h2>
+      </div>
+
+      <details class="faq-item" open>
+        <summary>Is TrackMile available now?</summary>
+        <p>Not yet publicly. It's in closed testing on Google Play — a small group of testers try the app before it goes to a wider release. Email us to be considered for the current round.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What does closed testing involve?</summary>
+        <p>You'll get a link to install TrackMile from the Play Store as a tester, use it for your normal driving, and send back honest feedback — what worked, what didn't, and anything that felt confusing. No special technical knowledge needed.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What phones does it support?</summary>
+        <p>TrackMile is an Android app. If you're on an iPhone, let us know your interest anyway — it helps with future planning.</p>
+      </details>
+      <details class="faq-item">
+        <summary>I found a bug — what should I include?</summary>
+        <p>The more detail the better: what you were doing, roughly what time, and what you expected to happen versus what actually happened. Screenshots help a lot if you're able to include one.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do you offer support for the other Fieldworks apps?</summary>
+        <p>The fire door inspection and site induction apps are still in development and not yet available. Email us if you'd like to be notified when they're ready for testers.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="copy">FIELDWORKS &middot; est. 2026</div>
+    <ul class="foot-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="privacy.html">Privacy policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  const t = document.getElementById('navToggle');
+  const l = document.getElementById('navLinks');
+  if (t) t.addEventListener('click', () => l.classList.toggle('open'));
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: full-bleed, no baked-in shadow, Play Store applies its own mask -->
+  <rect width="512" height="512" fill="#0E1A38"/>
+
+  <!-- Route line curving from behind the car out to the pin -->
+  <path d="M 90 340
+           C 150 340, 170 300, 210 300
+           C 260 300, 270 340, 330 340
+           C 380 340, 400 300, 400 260"
+        fill="none" stroke="#FFFFFF" stroke-width="16"
+        stroke-linecap="round" opacity="0.95"/>
+
+  <!-- Car silhouette (front-on view) -->
+  <g fill="#FFFFFF">
+    <path d="M150 260
+             C150 220, 175 190, 210 185
+             L 300 185
+             C 335 190, 360 220, 360 260
+             L 360 310
+             C 360 322, 350 330, 338 330
+             L 322 330
+             C 310 330, 300 322, 300 310
+             L 300 300
+             L 210 300
+             L 210 310
+             C 210 322, 200 330, 188 330
+             L 172 330
+             C 160 330, 150 322, 150 310
+             Z"/>
+    <!-- windscreen cut-out -->
+    <path d="M195 195 C 210 190, 300 190, 315 195 C 320 210, 320 225, 315 235 L 195 235 C 190 225, 190 210, 195 195 Z" fill="#0E1A38"/>
+    <!-- wheels -->
+    <circle cx="195" cy="325" r="22" fill="#0E1A38"/>
+    <circle cx="195" cy="325" r="10" fill="#FFFFFF"/>
+    <circle cx="315" cy="325" r="22" fill="#0E1A38"/>
+    <circle cx="315" cy="325" r="10" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Map pin with "m", positioned at the end of the route -->
+  <g>
+    <path d="M400 150
+             C 372 150, 350 172, 350 200
+             C 350 236, 400 285, 400 285
+             C 400 285, 450 236, 450 200
+             C 450 172, 428 150, 400 150 Z"
+          fill="#FFFFFF"/>
+    <circle cx="400" cy="200" r="34" fill="#2E6BE0"/>
+    <text x="400" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="40" fill="#FFFFFF">m</text>
+  </g>
+</svg>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrackMile — automatic mileage tracking for HMRC claims | Fieldworks</title>
+<meta name="description" content="TrackMile detects your driving automatically, applies the correct HMRC mileage rate, and exports a claim-ready report — offline-first, built for UK sole traders and employees.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="app-trackmile">
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark">Field<span>works</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="trackmile.html" class="active">TrackMile</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" style="padding-bottom: 20px;">
+  <div class="wrap hero-grid">
+    <div>
+      <img src="assets/trackmile-icon-512.png" alt="" width="64" height="64" style="border-radius:14px; margin-bottom:20px;">
+      <h1>Mileage tracking that runs itself.</h1>
+      <p class="lede">TrackMile notices when you're driving, logs the trip, and works out what you're owed at the correct HMRC rate — 55p/25p for cars and vans, 24p for motorcycles, 20p for bicycles. No start/stop buttons to forget.</p>
+      <div class="cta-row">
+        <a href="support.html" class="btn btn-accent">Join closed testing &rarr;</a>
+        <a href="#faq-trackmile" class="btn btn-ghost">How it works</a>
+      </div>
+    </div>
+    <div class="odometer-card">
+      <div class="odometer-label">Claim rate, applied automatically</div>
+      <div style="font-family: var(--font-mono); font-size: 1.9rem; font-weight:600; margin-bottom:6px;">55p <span style="opacity:.5; font-size:1.1rem;">per mile</span></div>
+      <div class="odometer-unit">Cars &amp; vans, first 10,000 business miles (2026/27 HMRC rate). Drops to 25p after the threshold — motorcycles and bicycles use their own flat rate.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="status-banner">
+      <span class="dot"></span>
+      <span><strong>Currently in development.</strong> Closed testing on Google Play opens soon — see the <a href="support.html" style="color: var(--accent-deep); font-weight:700;">support page</a> to be one of the first testers.</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="route">
+        <span class="marker">Capture</span>
+        <span class="line"></span>
+      </div>
+      <div class="feature-group">
+        <ul class="feature-list">
+          <li><strong>Automatic trip detection</strong><span>Recognises when you start and stop driving and records the journey in the background — no app to open, no timer to start.</span></li>
+          <li><strong>Route &amp; map view</strong><span>Every trip is plotted on a map afterwards, so you can check exactly where a journey went.</span></li>
+          <li><strong>Receipt scanning</strong><span>Photograph a fuel or parking receipt and TrackMile pulls the details in automatically.</span></li>
+          <li><strong>Manual trip entry</strong><span>For the odd journey the phone missed, add it by hand in a few seconds.</span></li>
+        </ul>
+      </div>
+
+      <div class="route">
+        <span class="marker">Claim</span>
+        <span class="line"></span>
+      </div>
+      <div class="feature-group">
+        <ul class="feature-list">
+          <li><strong>HMRC-correct rates, always</strong><span>Car, van, motorcycle and bicycle rates applied automatically — including the drop from 55p to 25p after the 10,000-mile threshold.</span></li>
+          <li><strong>Export as PDF, CSV or XLSX</strong><span>Generate a claim-ready report for your employer or your own records in whichever format you need.</span></li>
+          <li><strong>Calendar-aware</strong><span>Cross-reference trips against your calendar to help make sense of a busy week.</span></li>
+          <li><strong>Statistics &amp; totals</strong><span>See mileage and claim value by week, month or tax year at a glance.</span></li>
+        </ul>
+      </div>
+
+      <div class="route">
+        <span class="marker">Trust</span>
+        <span class="line"></span>
+      </div>
+      <div class="feature-group">
+        <ul class="feature-list">
+          <li><strong>Offline-first</strong><span>Trips are recorded to the device even with no signal, then sync when you're back online.</span></li>
+          <li><strong>Your data, backed up</strong><span>Back up and restore your full trip history if you change phones.</span></li>
+          <li><strong>Built to be reliable</strong><span>Crash and stability monitoring means issues get caught and fixed quickly, not discovered by you mid-claim.</span></li>
+          <li><strong>No unnecessary tracking</strong><span>Location is used to detect trips — not sold, not shared. Full detail on the <a href="privacy.html" style="color:var(--accent-deep); font-weight:700;">privacy page</a>.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq-trackmile">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>A few common questions</h2>
+      </div>
+      <details class="faq-item" open>
+        <summary>How does it know I'm driving?</summary>
+        <p>TrackMile uses your phone's motion sensors and GPS together to recognise driving-like movement, then confirms it with clear GPS evidence before logging a trip — so a walk to the shops doesn't get counted as a drive.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Does it drain my battery?</summary>
+        <p>Trip detection is designed to run efficiently in the background using the phone's standard activity recognition, rather than keeping GPS on constantly. Testing feedback on real-world battery use is exactly what the closed testing round is for.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What if it misses a trip?</summary>
+        <p>You can add any journey manually in a few seconds, and this is one of the areas we're actively refining ahead of a public release.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is it only for car mileage?</summary>
+        <p>No — car, van, motorcycle and bicycle are all supported, each with the correct HMRC rate applied automatically.</p>
+      </details>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="contact-card">
+        <h2 style="color: var(--white);">Be one of the first to try TrackMile</h2>
+        <p style="color: rgba(251,250,246,0.8); margin:0; max-width:56ch;">Closed testing needs a small group of UK drivers who claim mileage regularly — sole traders, tradespeople, or anyone on a mileage allowance at work.</p>
+        <a href="support.html" class="btn btn-accent">Get in touch</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="copy">FIELDWORKS &middot; est. 2026</div>
+    <ul class="foot-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="privacy.html">Privacy policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  const t = document.getElementById('navToggle');
+  const l = document.getElementById('navLinks');
+  if (t) t.addEventListener('click', () => l.classList.toggle('open'));
+</script>
+</body>
+</html>

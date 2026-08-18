@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy policy | Fieldworks</title>
+<meta name="description" content="How Fieldworks and TrackMile collect, use and store your data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <a href="index.html" class="wordmark">Field<span>works</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="support.html">Support</a></li>
+      <li><a href="privacy.html" class="active">Privacy</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" style="padding-bottom: 10px;">
+  <div class="wrap">
+    <h1 style="font-size: clamp(2rem, 4vw, 2.8rem);">Privacy policy</h1>
+    <p class="lede">This covers the Fieldworks apps, starting with TrackMile. Plain language, no legal padding.</p>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap doc">
+      <div class="updated">Last updated: 18 August 2026 &middot; Applies to: TrackMile</div>
+
+      <h2>Who this is</h2>
+      <p>TrackMile is developed by Fieldworks, an independent UK software developer. This policy explains what data TrackMile collects, why, and what control you have over it. If you have any questions, use the contact details on the <a href="support.html">support page</a>.</p>
+
+      <h2>What we collect and why</h2>
+      <ul>
+        <li><strong>Location data.</strong> TrackMile uses GPS and your phone's activity recognition to detect when a journey starts and ends, and to record the route. This is the core of how automatic trip detection works, and it's collected on your device even when the app is running in the background. Location is not collected when you have no trips active and detection is turned off.</li>
+        <li><strong>Trip and journey data.</strong> Distances, timestamps, routes, vehicle type and claim category are stored so you can review, edit and export your mileage history.</li>
+        <li><strong>Receipt images.</strong> If you photograph a receipt, that image is stored so it can be attached to a trip or expense record.</li>
+        <li><strong>Account and backup data.</strong> If you use backup and restore, your trip history is stored so it can be recovered on a new device.</li>
+        <li><strong>Crash and performance data.</strong> Technical information about app crashes or errors is collected automatically to help fix bugs. This does not include your trip content.</li>
+        <li><strong>Calendar data (optional).</strong> If you enable calendar sync, TrackMile reads relevant calendar entries to help cross-reference trips. This is off by default.</li>
+      </ul>
+
+      <h2>Where your data is stored</h2>
+      <p>Trip data is stored locally on your device first, so the app keeps working with no signal. Where backup or sync is enabled, data is stored on servers used by Fieldworks to provide that feature. Data is not sold, and is not shared with advertisers.</p>
+
+      <h2>Third-party services we use</h2>
+      <ul>
+        <li><strong>Google Maps Platform</strong> — to display routes and resolve locations to place names.</li>
+        <li><strong>Google ML Kit</strong> — used on-device to read receipt text; images are not sent to Google for this feature.</li>
+        <li><strong>Firebase Crashlytics &amp; Analytics</strong> — for crash reporting and basic, non-identifying usage statistics, to help us find and fix problems.</li>
+      </ul>
+      <p>Each of these providers processes limited data under their own privacy terms, in addition to this policy.</p>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>You can edit or delete any trip, receipt or record inside the app at any time.</li>
+        <li>You can turn off background location detection in your device settings, though this will stop automatic trip detection from working.</li>
+        <li>You can request a copy of your data, or ask us to delete it, by contacting us — see the <a href="support.html">support page</a>.</li>
+      </ul>
+
+      <h2>Data retention</h2>
+      <p>Your trip data is kept on your device for as long as you use the app, and in backup storage for as long as backup is enabled. Deleting the app removes local data from your device; contact us to remove any backed-up data as well.</p>
+
+      <h2>Children</h2>
+      <p>TrackMile is not directed at children and is not intended for use by anyone under 16.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this policy changes in a way that affects how your data is handled, we'll update the date at the top of this page and, where the change is significant, notify you in the app.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about your data or this policy can be sent through the <a href="support.html">support page</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="copy">FIELDWORKS &middot; est. 2026</div>
+    <ul class="foot-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trackmile.html">TrackMile</a></li>
+      <li><a href="support.html">Support</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  const t = document.getElementById('navToggle');
+  const l = document.getElementById('navLinks');
+  if (t) t.addEventListener('click', () => l.classList.toggle('open'));
+</script>
+</body>
+</html>
