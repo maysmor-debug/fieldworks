@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Every TrackMile setting, explained</title>
+<meta name="description" content="A complete reference for every setting in TrackMile — what it does, what the trade-offs are, and when to change it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#122548; --navy-deep:#0A1730; --gold:#AD7B0C; --gold-light:#E3B84E;
+    --green:#2E7D5B; --green-tint:#CDE9DB; --blue:#3E6AE1; --blue-tint:#DCE4FC;
+    --fog:#EDF0F4; --fog-2:#E2E7EE; --paper:#F7F8FA; --ink:#0F1B2E; --ink-soft:#4B5875;
+    --line:#D3DAE4; --white:#FFFFFF; --radius:14px;
+    --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--body);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:var(--disp);margin:0;letter-spacing:-0.01em;}
+  p{margin:0;line-height:1.65;}
+  a{color:inherit;}
+  code{font-family:var(--mono);background:var(--fog-2);padding:1px 6px;border-radius:5px;font-size:0.92em;}
+
+  header{background:var(--navy);color:white;padding:20px 0;}
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px;}
+  .header-row{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:700;font-size:17px;}
+  .brand svg{width:24px;height:24px;}
+  .back-link{font-size:13.5px;color:var(--gold-light);font-weight:600;text-decoration:none;display:flex;align-items:center;gap:6px;}
+
+  .hero{padding:56px 0 40px;border-bottom:1px solid var(--line);}
+  .hero .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:14px;}
+  .hero h1{font-size:clamp(28px,4vw,40px);line-height:1.15;font-weight:700;max-width:16ch;}
+  .hero p{margin-top:16px;font-size:16px;color:var(--ink-soft);max-width:60ch;}
+
+  .toc{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-top:28px;}
+  .toc .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:12px;display:block;}
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;}
+  @media(max-width:600px){.toc-grid{grid-template-columns:1fr;}}
+  .toc-grid a{font-size:14px;color:var(--navy);font-weight:600;text-decoration:none;display:block;padding:5px 0;border-bottom:1px dashed transparent;}
+  .toc-grid a:hover{border-color:var(--line);}
+
+  main{padding:48px 0 90px;}
+  .setting{padding:40px 0;border-bottom:1px solid var(--line);scroll-margin-top:24px;}
+  .setting:last-child{border-bottom:none;}
+  .setting-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .setting-num{font-family:var(--mono);font-size:12px;color:var(--gold);font-weight:700;}
+  .setting h2{font-size:22px;font-weight:700;}
+  .setting-body{display:grid;grid-template-columns:1fr;gap:24px;}
+  .setting-body.with-shot{grid-template-columns:1.5fr 1fr;}
+  @media(max-width:720px){.setting-body.with-shot{grid-template-columns:1fr;}}
+  .setting-shot{order:2;}
+  .setting-shot img{width:100%;border-radius:12px;border:1px solid var(--line);display:block;}
+  .setting-text{order:1;}
+  .setting-text > p{margin-bottom:12px;color:var(--ink-soft);font-size:15px;}
+  .setting-text > p:last-child{margin-bottom:0;}
+  .setting-text p strong{color:var(--ink);font-weight:600;}
+  .opt-list{margin:14px 0;padding:0;list-style:none;}
+  .opt-list li{
+    padding:10px 14px;border-left:3px solid var(--gold);background:var(--white);
+    border-radius:0 8px 8px 0;margin-bottom:8px;font-size:14px;color:var(--ink-soft);
+  }
+  .opt-list li b{color:var(--ink);}
+  .default-tag{
+    display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    background:var(--green-tint);color:var(--green);padding:2px 8px;border-radius:999px;margin-left:8px;
+    text-transform:uppercase;letter-spacing:.03em;vertical-align:middle;
+  }
+  .caution{
+    background:#FCEFE4;border:1px solid #E9C79A;border-radius:10px;padding:12px 14px;
+    font-size:13.5px;color:#7A4A0F;margin-top:14px;
+  }
+
+  footer{background:var(--navy-deep);color:#8FA0C2;padding:36px 0;text-align:center;font-size:13px;}
+  footer a{color:var(--gold-light);font-weight:600;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0A1730"/><path d="M8 21L14 11L18 17L24 9" stroke="#E3B84E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="21" r="2" fill="#E3B84E"/><circle cx="24" cy="9" r="2" fill="#E3B84E"/></svg>
+      TrackMile
+    </div>
+    <a class="back-link" href="trackmile.html">← Back to the app page</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Settings reference</span>
+    <h1>Every setting, what it does, and why it's there</h1>
+    <p>TrackMile's Settings tab has real depth — battery vs. responsiveness trade-offs, quiet hours, backup options. This page goes through all twelve sections in plain English, so you can set it up once and not think about it again.</p>
+
+    <div class="toc">
+      <span class="lbl">Jump to a section</span>
+      <div class="toc-grid">
+        <a href="#vehicles">1. Vehicles</a>
+        <a href="#location-precision">2. Location precision</a>
+        <a href="#automatic-detection">3. Automatic detection</a>
+        <a href="#work-hours">4. Work hours auto-classify</a>
+        <a href="#route-map">5. Route map detail</a>
+        <a href="#favorite-trips">6. Favorite trips</a>
+        <a href="#display">7. Display</a>
+        <a href="#calendar-sync">8. Calendar sync</a>
+        <a href="#email-reports">9. Email reports</a>
+        <a href="#data">10. Data &amp; backup</a>
+        <a href="#about">11. About</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <div class="setting" id="vehicles">
+      <div class="setting-head"><span class="setting-num">01</span><h2>Vehicles</h2></div>
+      <div class="setting-body">
+        <div class="setting-text">
+          <p>Every vehicle you drive for logged trips lives here — car, van, motorcycle or bicycle — each with its own current odometer reading and vehicle type, since motorcycles and bicycles use flat HMRC rates while cars and vans use the tiered 10,000-mile rate.</p>
+          <p>One vehicle is always marked <b>DEFAULT</b> — that's the one auto-detected trips attach to. Tap <b>Set default</b> on any other vehicle to switch it. Deleting a vehicle removes it from this list but leaves any journeys already logged against it untouched.</p>
+          <p><b>Add vehicle</b> asks for a name (e.g. "Van 1"), a starting odometer reading, and a type. That's it — no registration lookup, no DVLA integration, just a simple record.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting" id="location-precision">
+      <div class="setting-head"><span class="setting-num">02</span><h2>Location precision</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>Shows whether Android currently has <b>Precise</b> or <b>Approximate</b> location for TrackMile — this isn't a toggle TrackMile controls itself. Android deliberately keeps that switch in its own Settings app for privacy reasons, so this section just shows the current status and links straight there.</p>
+          <p>Approximate location is only accurate to roughly 1–3km, which makes distance tracking and journey detection unreliable — if trips are coming out with obviously wrong mileage or not being detected at all, this is the first thing to check.</p>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-detection1.jpg" alt="Location precision showing Currently: Precise, and the Automatic detection toggles below it"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="automatic-detection">
+      <div class="setting-head"><span class="setting-num">03</span><h2>Automatic detection</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>The largest section, and the one worth spending a minute on. TrackMile uses Android's low-power motion sensor to notice "in a vehicle" first, and only switches on GPS to confirm and track once that fires — GPS isn't running continuously in the background.</p>
+          <p><b>Auto-detect journeys</b> — the master on/off switch. <b>Notify when a trip is detected</b> and <b>Notify when a journey ends</b> control whether you get a notification for each, independent of each other.</p>
+          <p><b>Detection method</b> — three genuinely different strategies:</p>
+          <ul class="opt-list">
+            <li><b>Passive</b><span class="default-tag">Default</span> — works with zero effort using the motion sensor plus a periodic low-power safety-net check. Can occasionally lag a short trip's very first few seconds.</li>
+            <li><b>Android Auto only</b> — detects the instant your phone connects to Android Auto. The fastest and most battery-efficient option, but only catches drives where you actually connect.</li>
+            <li><b>Manual start only (no polling)</b> — zero background location activity, ever. You tap "Start journey" yourself every time. Most battery-efficient of all, at the cost of doing it by hand.</li>
+          </ul>
+          <p>In Passive mode, <b>Detection responsiveness</b> controls how often the safety-net check runs while waiting for a trip to start: Fastest (15s), Fast (30s), Balanced (60s), or Battery saver (3min). Faster catches short drives more reliably but checks location more often in the background. Takes effect from your next trip, not mid-drive.</p>
+          <p>Also in Passive mode, a <b>Do not track schedule</b> can switch detection off entirely during set times — two independent rules: full days off (e.g. weekends), and a separate active-hours window on the days not marked off (e.g. weekdays 7am–7pm only). Android Auto still works during quiet times regardless, in case of a genuinely unexpected trip. Re-arms itself within about 15 minutes of a quiet period ending.</p>
+          <p>Further down: <b>Minimum speed to trigger detection</b> (5–25mph, default 10) sets how fast you need to be moving before a trip is confirmed. <b>Auto-end journeys when stationary</b> ends a trip itself once you've been stopped for a set number of minutes (2–15, default 5) — no need to remember to tap End. <b>Remind me if no trips logged for a week</b> nudges you to check detection is still working if it goes quiet.</p>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-detectionmethod.jpg" alt="Detection method options: Passive, Android Auto only, Manual start only, with detection responsiveness chips below"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="work-hours">
+      <div class="setting-head"><span class="setting-num">04</span><h2>Work hours auto-classify</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>Drives detected within a set Mon–Fri time window are automatically logged as <b>Business</b>, with no manual classification needed afterward — useful if your working hours are consistent and most of what you drive during them genuinely is business mileage.</p>
+          <p>Switch it on, then set a start and end time. Anything detected outside that window still goes through the normal classification flow (live from Track, or the review queue in History).</p>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-detection2.jpg" alt="Minimum speed slider, auto-end journeys toggle, and the start of Work hours auto-classify"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="route-map">
+      <div class="setting-head"><span class="setting-num">05</span><h2>Route map detail</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>Controls what the map thumbnail on a journey's detail screen actually shows. This only affects trips recorded <i>from now on</i> — it can't add detail to trips already saved.</p>
+          <ul class="opt-list">
+            <li><b>Off</b><span class="default-tag">Default</span> — the map draws a straight suggested route between your start and end points only. Quick and lightweight, but won't show any detour or stop made along the way.</li>
+            <li><b>On ("Record the actual driven path")</b> — the map shows the real route you drove, including stops or detours. Stores extra GPS points per trip (a few hundred at most — still tiny compared to a photo).</li>
+          </ul>
+          <p>Either way, your mileage total is unaffected — that's always calculated from live GPS distance, regardless of this setting. This only changes what the picture looks like.</p>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-routemap.jpg" alt="Route map detail toggle, Favorite trips section, and the start of Display settings"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="favorite-trips">
+      <div class="setting-head"><span class="setting-num">06</span><h2>Favorite trips</h2></div>
+      <div class="setting-body">
+        <div class="setting-text">
+          <p>Routes you drive regularly. When a new trip starts and ends near a saved route, it's classified automatically — no prompt at all. Add one from any completed journey's detail screen ("Save as favorite trip").</p>
+          <p>Manage or remove saved routes from this list — each shows its name, trip type, and category if one's set.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting" id="display">
+      <div class="setting-head"><span class="setting-num">07</span><h2>Display</h2></div>
+      <div class="setting-body">
+        <div class="setting-text">
+          <p><b>Dark mode</b> — a straightforward on/off toggle for the app's theme.</p>
+          <p><b>Distance unit</b> — Miles or Kilometres. Since HMRC mileage relief is calculated in miles, switching to kilometres changes what's displayed but doesn't change the underlying HMRC figures.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting" id="calendar-sync">
+      <div class="setting-head"><span class="setting-num">08</span><h2>Calendar sync</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>Adds trips to a calendar already on your device (Google, Outlook, or whatever's syncing there), so you can look up where you were on a given date. This doesn't connect to Google or Outlook directly — it just writes to whichever calendar you pick, using the account that's already set up and syncing on your phone.</p>
+          <p><b>Enable calendar sync</b> requests calendar permission the first time you turn it on. Once granted, pick a <b>Calendar</b> from the dropdown — every calendar TrackMile has write access to on the device.</p>
+          <p><b>Automatically add trips to calendar</b> has four options: <b>Off</b> (add trips one at a time from a journey's detail screen instead), <b>All trips</b>, <b>Business only</b>, or <b>Private only</b> — handy if you only want work trips cluttering a work calendar, or vice versa.</p>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-calendar.jpg" alt="Calendar sync section with the enable toggle, calendar picker, and auto-add mode options"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="email-reports">
+      <div class="setting-head"><span class="setting-num">09</span><h2>Email reports</h2></div>
+      <div class="setting-body">
+        <div class="setting-text">
+          <p>Set a default recipient so the Email export options on History, Receipts and Statistics don't need an address typed each time — your employer's expenses inbox, or your accountant, for example. Leave it blank to pick a recipient in your email app each time instead.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="setting" id="data">
+      <div class="setting-head"><span class="setting-num">10</span><h2>Data &amp; backup</h2></div>
+      <div class="setting-body with-shot">
+        <div class="setting-text">
+          <p>Everything lives only on this device — there's no cloud account or sync. This section is the safety net.</p>
+          <p><b>Export full backup</b> zips every vehicle, journey, favourite route and receipt (including the photos) into one file you can save via the share sheet — to Google Drive, email it to yourself, wherever. <b>Restore from backup</b> wipes current data and replaces it wholesale with the backup's contents; a confirmation dialog spells this out before it happens.</p>
+          <p><b>Choose backup folder</b> sets up automatic weekly backups — pick a folder once (a real folder inside Google Drive works, since Drive shows up as a location in the picker) and TrackMile writes a fresh full backup into it weekly, overwriting the previous one. No Google sign-in needed; it just writes into whichever folder you grant access to, the same way any app can save a file into your Drive from the share sheet.</p>
+          <div class="caution">Back up regularly, especially before an app update or a new phone — restoring replaces everything currently on the device, so treat it as the last line of defence, not routine housekeeping.</div>
+        </div>
+        <div class="setting-shot"><img src="screenshots/settings-backup.jpg" alt="Data section with Export full backup and Restore from backup buttons, and the Automatic backup section with Choose backup folder"></div>
+      </div>
+    </div>
+
+    <div class="setting" id="about">
+      <div class="setting-head"><span class="setting-num">11</span><h2>About</h2></div>
+      <div class="setting-body">
+        <div class="setting-text">
+          <p>Shows the installed app version, a reminder that HMRC mileage rates are set by gov.uk and may change (TrackMile applies current published rates, but always double-check before submitting a tax return), and whether a Google Maps Static API key is configured for route thumbnails.</p>
+          <p>If a Maps key hasn't been set up, journey detail screens fall back gracefully to a plain "View route on Google Maps" button instead of a broken image — nothing breaks if this is left unconfigured.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Part of <a href="trackmile.html">TrackMile</a> by Fieldworks. Draft reference page — update screenshots and copy as Settings evolves.
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,301 +1,1046 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TrackMile — automatic mileage tracking for HMRC claims | Fieldworks</title>
-<meta name="description" content="TrackMile detects your driving automatically, applies the correct HMRC mileage rate, and exports a claim-ready report — offline-first, built for UK sole traders and employees.">
+<title>TrackMile — Automatic mileage tracking that pays for itself</title>
+<meta name="description" content="TrackMile detects your drives automatically, sorts business from private, and hands you HMRC-ready mileage reports. Local-only. No account. No cloud.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#122548;
+    --navy-deep:#0A1730;
+    --gold:#AD7B0C;
+    --gold-light:#E3B84E;
+    --green:#2E7D5B;
+    --green-tint:#CDE9DB;
+    --blue:#3E6AE1;
+    --blue-tint:#DCE4FC;
+    --fog:#EDF0F4;
+    --fog-2:#E2E7EE;
+    --paper:#F7F8FA;
+    --ink:#0F1B2E;
+    --ink-soft:#4B5875;
+    --line:#D3DAE4;
+    --white:#FFFFFF;
+    --radius:14px;
+    --disp:'Space Grotesk',sans-serif;
+    --body:'Inter',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  h1,h2,h3,h4{font-family:var(--disp);margin:0;letter-spacing:-0.01em;}
+  p{margin:0;line-height:1.6;}
+
+  /* ---------- Route line signature element ---------- */
+  .route-rail{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0 0 14px 0;
+  }
+  .route-rail .pin{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 4px rgba(173,123,12,0.14);
+    flex:none;
+  }
+  .route-rail .dashes{
+    flex:1;
+    height:0;
+    border-top:2px dashed var(--line);
+  }
+  .route-rail .place{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,248,250,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;max-width:1180px;margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:700;font-size:19px;}
+  .brand .mark{width:30px;height:30px;flex:none;}
+  .nav-links{display:flex;gap:30px;font-size:14.5px;font-weight:500;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--navy);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--body);font-weight:600;font-size:14.5px;
+    padding:11px 20px;border-radius:999px;border:1px solid transparent;
+    cursor:pointer;text-decoration:none;transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--gold);color:var(--navy-deep);}
+  .btn-primary:hover{box-shadow:0 8px 20px rgba(173,123,12,0.35);}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--navy);}
+  .btn-light{background:var(--white);color:var(--navy);}
+  @media(max-width:820px){.nav-links{display:none;}}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:radial-gradient(120% 140% at 15% 0%, #17305c 0%, var(--navy) 42%, var(--navy-deep) 100%);
+    color:var(--white);
+    padding:80px 0 0;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero .wrap{
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;align-items:center;
+    padding-bottom:60px;
+  }
+  @media(max-width:960px){.hero .wrap{grid-template-columns:1fr;}}
+  .eyebrow-route{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
+  .eyebrow-route .pin{width:8px;height:8px;border-radius:50%;background:var(--gold-light);}
+  .eyebrow-route .dashes{width:36px;height:0;border-top:2px dashed rgba(255,255,255,0.35);}
+  .eyebrow-route span{font-family:var(--mono);font-size:12.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold-light);}
+  .hero h1{
+    font-size:clamp(34px,4.6vw,54px);
+    line-height:1.06;
+    font-weight:700;
+    max-width:12ch;
+  }
+  .hero h1 em{font-style:normal;color:var(--gold-light);}
+  .hero .sub{
+    margin-top:22px;font-size:18px;line-height:1.6;color:#C7D2E8;max-width:46ch;
+  }
+  .hero-ctas{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  .trust-row{
+    display:flex;gap:22px;margin-top:34px;flex-wrap:wrap;
+    font-size:13.5px;color:#9FB0CE;font-family:var(--mono);
+  }
+  .trust-row span{display:flex;align-items:center;gap:7px;}
+  .trust-row svg{width:14px;height:14px;}
+
+  /* phone mock */
+  .phone-stage{position:relative;display:flex;justify-content:center;}
+  .phone{
+    width:290px;background:#0D1830;border-radius:34px;padding:12px;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
+    position:relative;
+  }
+  .phone::before{
+    content:'';position:absolute;top:22px;left:50%;transform:translateX(-50%);
+    width:56px;height:5px;border-radius:4px;background:rgba(255,255,255,0.15);
+  }
+  .phone-screen{
+    background:var(--paper);border-radius:24px;overflow:hidden;padding-top:34px;
+    min-height:520px;display:flex;flex-direction:column;
+  }
+  .ps-topbar{padding:0 18px 14px;display:flex;justify-content:space-between;align-items:center;}
+  .ps-topbar .label{font-size:11px;color:var(--ink-soft);font-family:var(--mono);}
+  .ps-card{
+    margin:0 16px 14px;background:var(--white);border-radius:16px;padding:18px;
+    box-shadow:0 1px 0 var(--line);
+  }
+  .ps-badge{
+    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;
+    padding:4px 10px;border-radius:999px;background:var(--green-tint);color:var(--green);
+    font-family:var(--mono);letter-spacing:.03em;
+  }
+  .ps-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .ps-route{font-size:15px;font-weight:600;margin-top:12px;}
+  .ps-sub{font-size:12.5px;color:var(--ink-soft);margin-top:3px;}
+  .odo{
+    font-family:var(--mono);font-size:34px;font-weight:600;margin-top:14px;color:var(--navy);
+  }
+  .odo span{font-size:14px;color:var(--ink-soft);font-weight:500;margin-left:6px;}
+  .ps-buttons{display:flex;gap:10px;margin-top:16px;}
+  .ps-chip{
+    flex:1;text-align:center;padding:10px 0;border-radius:10px;font-size:12.5px;font-weight:600;
+  }
+  .ps-chip.biz{background:var(--green);color:white;}
+  .ps-chip.priv{background:var(--fog-2);color:var(--ink-soft);}
+  .ps-mini{
+    margin:0 16px;background:transparent;display:flex;gap:10px;
+  }
+  .ps-mini .mcard{
+    flex:1;background:var(--white);border-radius:12px;padding:12px;
+  }
+  .ps-mini .mcard .k{font-size:10.5px;color:var(--ink-soft);font-family:var(--mono);text-transform:uppercase;}
+  .ps-mini .mcard .v{font-size:16px;font-weight:700;margin-top:4px;color:var(--gold);font-family:var(--mono);}
+  .ps-navbar{
+    margin-top:auto;background:var(--navy);display:flex;justify-content:space-around;padding:14px 0 16px;
+  }
+  .ps-navbar .ni{width:20px;height:20px;opacity:.55;}
+  .ps-navbar .ni.active{opacity:1;}
+  .float-tag{
+    position:absolute;background:var(--white);color:var(--ink);border-radius:12px;padding:10px 14px;
+    font-size:12.5px;font-weight:600;box-shadow:0 14px 30px rgba(0,0,0,0.25);
+    display:flex;align-items:center;gap:8px;
+  }
+  .float-tag.t1{top:60px;left:-18px;}
+  .float-tag.t2{bottom:90px;right:-22px;}
+  .float-tag svg{width:16px;height:16px;flex:none;}
+  .phone.real .phone-screen{padding:0;min-height:auto;display:block;background:transparent;}
+  .shot-img{width:100%;display:block;border-radius:24px;}
+  @media(max-width:960px){.float-tag{display:none;}}
+
+  /* ---------- Section shells ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:640px;margin:0 0 52px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,38px);font-weight:700;line-height:1.15;}
+  .section-head p{margin-top:14px;font-size:16.5px;color:var(--ink-soft);}
+  .tag-eyebrow{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:14px;display:block;
+  }
+
+  /* ---------- Stat strip ---------- */
+  .stat-strip{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:52px 0;}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  @media(max-width:760px){.stat-grid{grid-template-columns:1fr;}}
+  .stat{text-align:left;}
+  .stat .num{font-family:var(--mono);font-size:38px;font-weight:600;color:var(--navy);}
+  .stat .num .u{font-size:20px;color:var(--gold);}
+  .stat .lbl{margin-top:8px;font-size:14.5px;color:var(--ink-soft);max-width:32ch;}
+
+  /* ---------- Persona / real world section ---------- */
+  .persona-list{display:flex;flex-direction:column;gap:0;}
+  .persona{
+    display:grid;grid-template-columns:44px 1fr;gap:24px;padding:36px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .persona:first-child{padding-top:0;}
+  .persona-marker{display:flex;flex-direction:column;align-items:center;}
+  .persona-marker .dot{
+    width:10px;height:10px;border-radius:50%;background:var(--gold);
+    box-shadow:0 0 0 5px rgba(173,123,12,0.12);
+  }
+  .persona-marker .line{flex:1;width:0;border-left:2px dashed var(--line);margin-top:8px;}
+  .persona:last-child .persona-marker .line{display:none;}
+  .persona-body{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;}
+  @media(max-width:820px){.persona-body{grid-template-columns:1fr;}}
+  .persona h3{font-size:22px;font-weight:700;}
+  .persona .role{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px;display:block;}
+  .persona p.story{margin-top:14px;font-size:15.5px;color:var(--ink-soft);line-height:1.65;}
+  .persona-figures{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:22px;
+    align-self:start;
+  }
+  .pf-row{display:flex;justify-content:space-between;font-size:13.5px;padding:8px 0;border-bottom:1px dashed var(--line);}
+  .pf-row:last-child{border-bottom:none;}
+  .pf-row .k{color:var(--ink-soft);}
+  .pf-row .v{font-family:var(--mono);font-weight:600;}
+  .pf-total{
+    margin-top:12px;padding-top:14px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .pf-total .k{font-size:13px;color:var(--ink-soft);}
+  .pf-total .v{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--gold);}
+  .feature-mentions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .fm-chip{
+    font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px;
+    background:var(--blue-tint);color:var(--blue);font-family:var(--mono);
+  }
+
+  /* ---------- How it works ---------- */
+  .how{background:var(--navy);color:var(--white);}
+  .how .section-head p{color:#B9C6E2;}
+  .how .tag-eyebrow{color:var(--gold-light);}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+  @media(max-width:900px){.steps{grid-template-columns:1fr;}}
+  .step{position:relative;padding:0 20px 0 0;}
+  .step-num{
+    font-family:var(--mono);font-size:13px;color:var(--gold-light);
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .step-num .n{
+    width:26px;height:26px;border-radius:50%;border:1px solid rgba(227,184,78,0.5);
+    display:flex;align-items:center;justify-content:center;font-size:12px;
+  }
+  .step-rail{position:absolute;top:13px;left:36px;right:-20px;height:0;border-top:2px dashed rgba(255,255,255,0.18);}
+  @media(max-width:900px){.step-rail{display:none;}}
+  .step:last-child .step-rail{display:none;}
+  .step h4{font-size:17px;font-weight:600;margin-bottom:8px;}
+  .step p{font-size:14px;color:#AEBBDA;line-height:1.6;}
+
+  /* ---------- Feature groups ---------- */
+  .feat-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+  .feat-tab{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.02em;
+    padding:9px 16px;border-radius:999px;border:1px solid var(--line);
+    background:var(--white);cursor:pointer;color:var(--ink-soft);font-weight:500;
+    transition:all .15s ease;
+  }
+  .feat-tab.active{background:var(--navy);border-color:var(--navy);color:var(--white);}
+  .feat-panels{position:relative;}
+  .feat-panel{display:none;}
+  .feat-panel.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:960px){.feat-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.feat-grid{grid-template-columns:1fr;}}
+  .feat-card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;
+  }
+  .feat-card .icon{
+    width:38px;height:38px;border-radius:10px;background:var(--fog-2);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  }
+  .feat-card .icon svg{width:19px;height:19px;stroke:var(--navy);}
+  .feat-card h4{font-size:15.5px;font-weight:700;margin-bottom:7px;}
+  .feat-card p{font-size:13.8px;color:var(--ink-soft);line-height:1.55;}
+
+  /* ---------- Rates strip ---------- */
+  .rates{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:36px;margin-top:56px;}
+  .rates-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:26px;}
+  .rates-head h3{font-size:20px;font-weight:700;}
+  .rates-head .note{font-size:12.5px;color:var(--ink-soft);font-family:var(--mono);}
+  .rate-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media(max-width:820px){.rate-grid{grid-template-columns:repeat(2,1fr);}}
+  .rate-card{background:var(--fog);border-radius:12px;padding:18px;}
+  .rate-card .veh{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .rate-card .veh svg{width:16px;height:16px;}
+  .rate-card .amount{font-family:var(--mono);font-size:22px;font-weight:700;margin-top:10px;color:var(--gold);}
+  .rate-card .cond{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+
+  /* ---------- Privacy ---------- */
+  .privacy{background:var(--navy-deep);color:var(--white);}
+  .privacy-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+  @media(max-width:900px){.privacy-grid{grid-template-columns:1fr;}}
+  .privacy h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;line-height:1.2;}
+  .privacy .lead{margin-top:16px;font-size:16px;color:#B9C6E2;line-height:1.65;}
+  .privacy-list{margin-top:26px;display:flex;flex-direction:column;gap:16px;}
+  .privacy-item{display:flex;gap:14px;align-items:flex-start;}
+  .privacy-item svg{width:18px;height:18px;flex:none;margin-top:2px;stroke:var(--gold-light);}
+  .privacy-item div b{font-size:14.5px;font-weight:600;display:block;}
+  .privacy-item div span{font-size:13.5px;color:#AEBBDA;}
+  .disclosure-card{
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+    border-radius:16px;padding:26px;
+  }
+  .disclosure-card .tag-eyebrow{color:var(--gold-light);}
+  .disclosure-card h4{font-size:16px;font-weight:700;margin-bottom:10px;}
+  .disclosure-card p{font-size:13.8px;color:#B9C6E2;line-height:1.65;margin-bottom:14px;}
+  .disclosure-card ul{margin:0;padding-left:18px;color:#B9C6E2;font-size:13.5px;line-height:1.8;}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{max-width:820px;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    padding:22px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;
+    font-family:var(--disp);font-size:16.5px;font-weight:600;color:var(--ink);
+  }
+  .faq-q .plus{
+    width:22px;height:22px;flex:none;position:relative;
+  }
+  .faq-q .plus::before,.faq-q .plus::after{
+    content:'';position:absolute;background:var(--navy);transition:transform .25s ease;
+  }
+  .faq-q .plus::before{top:50%;left:0;width:100%;height:2px;transform:translateY(-50%);}
+  .faq-q .plus::after{left:50%;top:0;height:100%;width:2px;transform:translateX(-50%);}
+  .faq-item.open .plus::after{transform:translateX(-50%) rotate(90deg);opacity:0;}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .faq-a p{padding:0 0 22px;font-size:14.5px;color:var(--ink-soft);max-width:70ch;line-height:1.65;}
+
+  /* ---------- Final CTA ---------- */
+  .cta-final{
+    background:radial-gradient(120% 160% at 85% 0%, #17305c 0%, var(--navy) 45%, var(--navy-deep) 100%);
+    color:var(--white);text-align:center;
+  }
+  .cta-final .wrap{max-width:680px;}
+  .cta-final h2{font-size:clamp(28px,4vw,42px);font-weight:700;line-height:1.15;}
+  .cta-final p{margin-top:16px;font-size:16.5px;color:#C7D2E8;}
+  .store-badge{
+    margin-top:36px;display:inline-flex;align-items:center;gap:12px;
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);
+    padding:14px 24px;border-radius:14px;
+  }
+  .store-badge svg{width:26px;height:26px;}
+  .store-badge .txt{text-align:left;}
+  .store-badge .txt .small{font-size:10.5px;color:#9FB0CE;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono);}
+  .store-badge .txt .big{font-size:16px;font-weight:700;font-family:var(--disp);}
+  .notify-row{
+    margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+  }
+  .notify-row input{
+    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
+    border-radius:999px;padding:13px 20px;color:white;font-size:14.5px;min-width:260px;
+    font-family:var(--body);
+  }
+  .notify-row input::placeholder{color:#8FA0C2;}
+  .notify-note{margin-top:14px;font-size:12.5px;color:#8FA0C2;}
+
+  footer{background:var(--navy-deep);color:#8FA0C2;padding:44px 0 30px;}
+  .footer-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:13px;}
+  .footer-brand{display:flex;align-items:center;gap:9px;color:white;font-family:var(--disp);font-weight:700;}
+  .footer-brand .mark{width:22px;height:22px;}
+  .footer-links{display:flex;gap:22px;flex-wrap:wrap;}
+  .footer-links a:hover{color:white;}
+  .footer-fine{margin-top:26px;font-size:12px;color:#5E6E90;line-height:1.6;max-width:820px;}
+
+  /* ---------- App tour (accurate screen mockups) ---------- */
+  .tour-tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:44px;}
+  .tour-stage{display:flex;justify-content:center;}
+  .tour-panel{display:none;}
+  .tour-panel.active{display:flex;justify-content:center;animation:fadeIn .35s ease;}
+  .tour-caption{max-width:290px;margin:22px auto 0;text-align:center;font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  .mock-btn{
+    border-radius:10px;padding:10px 12px;font-size:12.5px;font-weight:600;text-align:center;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .mock-btn.solid{background:var(--navy);color:white;}
+  .mock-btn.outline{border:1px solid var(--line);color:var(--navy);}
+  .odo-static{font-family:var(--mono);font-size:32px;font-weight:600;color:var(--navy);margin-top:10px;}
+  .odo-static span{display:block;font-size:11.5px;font-weight:500;color:var(--ink-soft);font-family:var(--body);margin-top:2px;}
+  .hist-topbar-icons{display:flex;gap:10px;}
+  .hist-topbar-icons svg{width:16px;height:16px;opacity:.55;}
+  .section-label-mock{
+    font-size:11.5px;font-weight:700;color:var(--ink);padding:0 16px;margin-bottom:8px;
+  }
+  .review-card{
+    margin:0 16px 10px;background:var(--white);border:1px solid var(--gold);border-radius:12px;padding:13px;
+  }
+  .review-card .top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .review-card .name{font-size:13px;font-weight:600;}
+  .review-card .potential{font-family:var(--mono);font-size:11px;color:var(--gold);font-weight:600;}
+  .review-card .btns{display:flex;gap:8px;margin-top:10px;}
+  .review-card .rbtn{flex:1;text-align:center;font-size:11px;font-weight:700;padding:7px 0;border-radius:8px;}
+  .review-card .rbtn.biz{background:var(--green-tint);color:var(--green);}
+  .review-card .rbtn.priv{background:var(--blue-tint);color:var(--blue);}
+  .chip-row-mock{display:flex;gap:8px;padding:0 16px 10px;flex-wrap:wrap;}
+  .chip-mock{
+    font-size:11px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);
+    display:flex;align-items:center;gap:5px;
+  }
+  .chip-mock.active{background:var(--navy);color:white;border-color:var(--navy);}
+  .hist-row{
+    margin:0 16px 8px;background:var(--white);border-radius:12px;padding:13px 14px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .hist-row .name{font-size:13px;font-weight:600;}
+  .hist-row .meta{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+  .hist-row .right{text-align:right;}
+  .hist-row .mi{font-family:var(--mono);font-size:13px;font-weight:600;}
+  .badge-mock{
+    display:inline-block;margin-top:4px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;
+  }
+  .badge-mock.biz{background:var(--green-tint);color:var(--green);}
+  .badge-mock.priv{background:var(--blue-tint);color:var(--blue);}
+  .stat-row-mock{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;}
+  .stat-row-mock .k{color:var(--ink-soft);}
+  .stat-row-mock .v{font-family:var(--mono);font-weight:600;}
+  .stat-row-mock.total .v{font-size:16px;color:var(--gold);font-weight:700;}
+  .bar-row{margin-bottom:10px;}
+  .bar-row .lbl-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+  .bar-row .lbl-row .k{color:var(--ink-soft);}
+  .bar-row .lbl-row .v{font-family:var(--mono);font-weight:600;}
+  .bar-track{height:6px;border-radius:4px;background:var(--fog-2);overflow:hidden;}
+  .bar-fill{height:100%;background:var(--navy);border-radius:4px;}
+  .period-chip-row{display:flex;gap:6px;padding:0 16px 12px;}
+  .period-chip{
+    flex:1;text-align:center;font-size:10.5px;font-weight:700;padding:7px 0;border-radius:8px;
+    border:1px solid var(--line);color:var(--ink-soft);
+  }
+  .period-chip.active{background:var(--navy);color:white;border-color:var(--navy);}
+  .receipt-row{
+    margin:0 16px 8px;background:var(--white);border-radius:12px;padding:11px 14px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .receipt-row .thumb{
+    width:36px;height:36px;border-radius:8px;background:var(--fog-2);display:flex;align-items:center;justify-content:center;flex:none;
+  }
+  .receipt-row .thumb svg{width:17px;height:17px;stroke:var(--navy);}
+  .receipt-row .info{flex:1;}
+  .receipt-row .info .n{font-size:12.5px;font-weight:600;}
+  .receipt-row .info .c{font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+  .receipt-row .amt{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold);}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    *{scroll-behavior:auto !important;}
+  }
+</style>
 </head>
-<body class="app-trackmile">
+<body>
 
-<nav class="site-nav">
-  <div class="wrap">
-    <a href="index.html" class="wordmark-lockup">
-      <span class="parent">Fieldworks</span>
-      <span class="current">TrackMile</span>
-    </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">&#9776;</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="trackmile.html" class="active">TrackMile</a></li>
-      <li><a href="support.html">Support</a></li>
-      <li><a href="privacy.html">Privacy</a></li>
-    </ul>
-  </div>
-</nav>
-
-<header class="hero" style="padding-bottom: 20px;">
-  <div class="wrap hero-grid">
-    <div>
-      <img src="assets/trackmile-icon-512.png" alt="" width="64" height="64" style="border-radius:14px; margin-bottom:20px;">
-      <h1>Mileage tracking that runs itself.</h1>
-      <p class="lede">TrackMile notices when you're driving, logs the trip, and works out what you're owed at the correct HMRC rate — 55p/25p for cars and vans, 24p for motorcycles, 20p for bicycles. No start/stop buttons to forget.</p>
-      <div class="cta-row">
-        <a href="support.html" class="btn btn-accent">Join closed testing &rarr;</a>
-        <a href="#faq-trackmile" class="btn btn-ghost">How it works</a>
-      </div>
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#122548"/>
+        <path d="M8 21L14 11L18 17L24 9" stroke="#E3B84E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="21" r="2" fill="#E3B84E"/>
+        <circle cx="24" cy="9" r="2" fill="#E3B84E"/>
+      </svg>
+      TrackMile
     </div>
-    <div class="odometer-card">
-      <div class="odometer-label">Claim rate, applied automatically</div>
-      <div style="font-family: var(--font-mono); font-size: 1.9rem; font-weight:600; margin-bottom:6px;">55p <span style="opacity:.5; font-size:1.1rem;">per mile</span></div>
-      <div class="odometer-unit">Cars &amp; vans, first 10,000 business miles (2026/27 HMRC rate). Drops to 25p after the threshold — motorcycles and bicycles use their own flat rate.</div>
-    </div>
+    <nav class="nav-links">
+      <a href="#tour">See the app</a>
+      <a href="#why">Why TrackMile</a>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#get" class="btn btn-primary">Get notified</a>
   </div>
 </header>
 
-<main>
+<!-- ============ HERO ============ -->
+<section class="hero">
   <div class="wrap">
-    <div class="status-banner">
-      <span class="dot"></span>
-      <span><strong>Currently in development.</strong> Closed testing on Google Play opens soon — see the <a href="support.html" style="color: var(--accent-deep); font-weight:700;">support page</a> to be one of the first testers.</span>
+    <div>
+      <div class="eyebrow-route">
+        <span class="pin"></span><span class="dashes"></span>
+        <span>Home → Site visit → HMRC claim</span>
+      </div>
+      <h1>Every business mile, <em>logged before you've parked the car.</em></h1>
+      <p class="sub">TrackMile notices when you're driving, sorts business from private, and turns the whole tax year into a claim you can hand over in one tap — no odometer diary, no guesswork.</p>
+      <div class="hero-ctas">
+        <a href="#get" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
+          Notify me on launch
+        </a>
+        <a href="#how" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,0.3);">See how it works</a>
+      </div>
+      <div class="trust-row">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>Local-only data</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>No account needed</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Nothing shared, ever</span>
+      </div>
+    </div>
+
+    <div class="phone-stage">
+      <div class="float-tag t1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2E7D5B" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+        Detected automatically
+      </div>
+      <div class="float-tag t2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#AD7B0C" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        Nothing to type while driving
+      </div>
+      <div class="phone real">
+        <div class="phone-screen"><img class="shot-img" src="screenshots/track-active.jpg" alt="TrackMile Track tab showing a journey in progress, 0.3 miles tracked so far"></div>
+      </div>
     </div>
   </div>
+</section>
 
-  <section id="how-it-works">
-    <div class="wrap">
-      <div class="route">
-        <span class="marker">How it works</span>
-        <span class="line"></span>
+<!-- ============ STAT STRIP ============ -->
+<div class="stat-strip">
+  <div class="wrap stat-grid">
+    <div class="stat reveal">
+      <div class="num">55<span class="u">p</span>/mi</div>
+      <p class="lbl">Current HMRC approved rate for the first 10,000 business car/van miles in the 2026/27 tax year — TrackMile applies it automatically, tier by tier.</p>
+    </div>
+    <div class="stat reveal">
+      <div class="num">0<span class="u"> taps</span></div>
+      <p class="lbl">To start a trip. Detection runs quietly in the background and begins recording the moment you're moving.</p>
+    </div>
+    <div class="stat reveal">
+      <div class="num">100<span class="u">%</span></div>
+      <p class="lbl">Of your data stays on your phone. No cloud account, no server, nothing to leak — it's a local database, not a subscription.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP TOUR (real screenshots) ============ -->
+<section id="tour">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-left:auto;margin-right:auto;text-align:center;">
+      <span class="tag-eyebrow">Straight off the phone, no staging</span>
+      <h2>What you'll actually see</h2>
+      <p style="margin-left:auto;margin-right:auto;">Real screenshots from a working build — not renders, not a Figma file. Some placeholder trip data is still on screen, but every layout, label and card here is exactly what ships.</p>
+    </div>
+
+    <div class="tour-tabs reveal" id="tourTabs">
+      <button class="feat-tab active" data-tour="track">Track</button>
+      <button class="feat-tab" data-tour="history">History</button>
+      <button class="feat-tab" data-tour="stats">Statistics</button>
+      <button class="feat-tab" data-tour="receipts">Receipts</button>
+      <button class="feat-tab" data-tour="settings">Settings</button>
+    </div>
+
+    <div class="tour-stage reveal">
+
+      <!-- TRACK -->
+      <div class="tour-panel active" id="tourpanel-track">
+        <div>
+          <div class="phone real">
+            <div class="phone-screen"><img class="shot-img" src="screenshots/track-active.jpg" alt="TrackMile Track tab showing a journey in progress, 0.3 miles tracked so far, with Business/Private and End journey/Cancel buttons"></div>
+          </div>
+          <p class="tour-caption">A journey being tracked live. Nothing to type while driving — just a mile count, a Business/Private choice, and End journey when you're done.</p>
+        </div>
       </div>
-      <div class="section-head">
-        <h2>Four steps, and you only do one of them</h2>
+
+      <!-- HISTORY -->
+      <div class="tour-panel" id="tourpanel-history">
+        <div>
+          <div class="phone real">
+            <div class="phone-screen"><img class="shot-img" src="screenshots/history-review.jpg" alt="TrackMile History tab showing the Needs Review queue with per-trip value estimates, filter chips, and a grouped multi-leg trip"></div>
+          </div>
+          <p class="tour-caption">The review queue — each unclassified drive shows what it's worth as a business mile before you've even tapped anything.</p>
+        </div>
       </div>
-      <div class="steps-row">
-        <div class="step">
-          <div class="step-rail"></div>
-          <div class="step-num"><span class="n">1</span></div>
-          <h4>You drive</h4>
-          <p>TrackMile watches for genuine driving using your phone's low-power motion sensor, not constant GPS — it wakes up properly the moment you're actually moving.</p>
+
+      <!-- STATISTICS -->
+      <div class="tour-panel" id="tourpanel-stats">
+        <div>
+          <div class="phone real">
+            <div class="phone-screen"><img class="shot-img" src="screenshots/statistics.jpg" alt="TrackMile Statistics tab showing monthly totals, the HMRC reimbursement calculation, and a 4-week trend chart"></div>
+          </div>
+          <p class="tour-caption">This month's totals, the live HMRC reimbursement figure, and a 4-week trend — all updating as trips come in.</p>
         </div>
-        <div class="step">
-          <div class="step-rail"></div>
-          <div class="step-num"><span class="n">2</span></div>
-          <h4>It's classified</h4>
-          <p>Trips inside your working hours sort themselves automatically. Anything left over waits in a swipe-to-review queue — right for business, left for private.</p>
+      </div>
+
+      <!-- RECEIPTS -->
+      <div class="tour-panel" id="tourpanel-receipts">
+        <div>
+          <div class="phone real">
+            <div class="phone-screen"><img class="shot-img" src="screenshots/receipts.jpg" alt="TrackMile Receipts tab showing a running total and two photographed receipts"></div>
+          </div>
+          <p class="tour-caption">Fuel, parking and toll receipts, photographed and filed with a running total — no separate expenses app needed.</p>
         </div>
-        <div class="step">
-          <div class="step-rail"></div>
-          <div class="step-num"><span class="n">3</span></div>
-          <h4>It's valued</h4>
-          <p>The current HMRC rate is applied automatically, tier by tier, per vehicle type — car, van, motorcycle or bicycle — so the running total is always accurate.</p>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tour-panel" id="tourpanel-settings">
+        <div>
+          <div class="phone real">
+            <div class="phone-screen"><img class="shot-img" src="screenshots/settings-detectionmethod.jpg" alt="TrackMile Settings showing the three detection modes and detection responsiveness options"></div>
+          </div>
+          <p class="tour-caption">Detection method, responsiveness, quiet hours, backups, calendar sync — genuinely configurable, not just a toggle for dark mode.<br><a href="settings-guide.html" style="color:var(--gold);font-weight:600;">See every setting explained →</a></p>
         </div>
-        <div class="step">
-          <div class="step-num"><span class="n">4</span></div>
-          <h4>You claim it</h4>
-          <p>Export a PDF report, an Excel sheet, or a CSV, filtered to any date range, and email it straight to your accountant or employer in one flow.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY / REAL WORLD ============ -->
+<section id="why">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Why people switch</span>
+      <h2>Built for the miles that actually cost you money</h2>
+      <p>Three real ways people leave HMRC mileage relief on the table — and how TrackMile closes the gap, using the app's actual features rather than a sales pitch.</p>
+    </div>
+
+    <div class="persona-list">
+
+      <div class="persona reveal">
+        <div class="persona-marker"><span class="dot"></span><span class="line"></span></div>
+        <div class="persona-body">
+          <div>
+            <h3>The property portfolio manager</h3>
+            <span class="role">Multiple sites, one van, no time to log anything</span>
+            <p class="story">A morning that starts at the office, takes in a fire-risk assessment at one unit, a contractor meeting at another, and a lightning-protection survey across town, easily becomes four separate journeys. Writing each one down after the fact — or worse, at month-end from memory — means rounding down, or simply forgetting the short hops. TrackMile logs every leg the moment it happens, reverse-geocodes the start and end into a real place name like "Unit 4, Deeside → Colwyn Bay Retail Park," and lets multi-stop days get grouped into one combined figure with Merge Trips, so a report to an accountant reads as one clean trip instead of four fragments.</p>
+            <div class="feature-mentions">
+              <span class="fm-chip">Automatic detection</span>
+              <span class="fm-chip">Place names</span>
+              <span class="fm-chip">Merge trips</span>
+              <span class="fm-chip">Multi-vehicle</span>
+            </div>
+          </div>
+          <div class="persona-figures">
+            <div class="pf-row"><span class="k">Business miles / year</span><span class="v">6,200 mi</span></div>
+            <div class="pf-row"><span class="k">Rate applied</span><span class="v">55p (2026/27)</span></div>
+            <div class="pf-row"><span class="k">Miles under threshold</span><span class="v">6,200 of 10,000</span></div>
+            <div class="pf-total"><span class="k">Claimable this year</span><span class="v">£3,410</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="persona reveal">
+        <div class="persona-marker"><span class="dot"></span><span class="line"></span></div>
+        <div class="persona-body">
+          <div>
+            <h3>The self-employed tradesperson</h3>
+            <span class="role">Vans, ladders, and a phone that never gets touched mid-job</span>
+            <p class="story">Callouts, supplier runs and job-to-job driving add up fast, and no one wants to type an odometer reading standing in the rain outside a client's house. TrackMile's auto-detected journeys need nothing entered while driving — just a live mile counter — and once you're home, unclassified drives sit in a swipe-to-review queue: right for business, left for private. Set a Mon–Fri working-hours window once, and jobs during the day classify themselves with no prompt at all.</p>
+            <div class="feature-mentions">
+              <span class="fm-chip">Work-hours auto-classify</span>
+              <span class="fm-chip">Swipe review queue</span>
+              <span class="fm-chip">No typing while driving</span>
+              <span class="fm-chip">Receipts capture</span>
+            </div>
+          </div>
+          <div class="persona-figures">
+            <div class="pf-row"><span class="k">Business miles / year</span><span class="v">14,500 mi</span></div>
+            <div class="pf-row"><span class="k">First 10,000 mi @ 55p</span><span class="v">£5,500</span></div>
+            <div class="pf-row"><span class="k">Remaining 4,500 mi @ 25p</span><span class="v">£1,125</span></div>
+            <div class="pf-total"><span class="k">Claimable this year</span><span class="v">£6,625</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="persona reveal">
+        <div class="persona-marker"><span class="dot"></span></div>
+        <div class="persona-body">
+          <div>
+            <h3>The mobile sales rep</h3>
+            <span class="role">A different client, a different postcode, every single day</span>
+            <p class="story">Handing over a spreadsheet at month-end is slow for you and slower for whoever has to check it. TrackMile builds the report as you go: HMRC-ready PDF and Excel exports, filtered to an exact date range ("last month" in two taps), and an Email export that opens straight into a compose window with the file already attached — addressed to a saved default recipient like an expenses inbox, no retyping needed. A running per-trip "£ potential" on the review queue shows what a drive is worth before you've even classified it.</p>
+            <div class="feature-mentions">
+              <span class="fm-chip">PDF / Excel / CSV export</span>
+              <span class="fm-chip">Email export</span>
+              <span class="fm-chip">Date-range filters</span>
+              <span class="fm-chip">Per-trip £ potential</span>
+            </div>
+          </div>
+          <div class="persona-figures">
+            <div class="pf-row"><span class="k">Typical multi-stop day</span><span class="v">87 mi</span></div>
+            <div class="pf-row"><span class="k">Rate applied</span><span class="v">55p (2026/27)</span></div>
+            <div class="pf-row"><span class="k">Report sent</span><span class="v">Auto-attached PDF</span></div>
+            <div class="pf-total"><span class="k">Value of that one day</span><span class="v">£47.85</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">The route from drive to claim</span>
+      <h2>Four steps. None of them are yours to remember.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-rail"></div>
+        <div class="step-num"><span class="n">1</span></div>
+        <h4>You drive</h4>
+        <p>A low-power motion sensor (not raw GPS) notices you've entered a vehicle and quietly switches on tracking — no prompt, no tap, nothing to do.</p>
+      </div>
+      <div class="step">
+        <div class="step-rail"></div>
+        <div class="step-num"><span class="n">2</span></div>
+        <h4>It's classified</h4>
+        <p>A saved route or your working-hours window sorts most trips instantly. Anything left over waits in a swipe-to-review queue — right for business, left for private.</p>
+      </div>
+      <div class="step">
+        <div class="step-rail"></div>
+        <div class="step-num"><span class="n">3</span></div>
+        <h4>It's valued</h4>
+        <p>The current HMRC rate is applied automatically, tier by tier, per vehicle type — car, van, motorcycle or bicycle — so the running total is always accurate.</p>
+      </div>
+      <div class="step">
+        <div class="step-num"><span class="n">4</span></div>
+        <h4>You claim it</h4>
+        <p>Export a PDF report, an Excel sheet, or a CSV, filtered to any date range, and email it straight to your accountant or employer in one flow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Everything in the app</span>
+      <h2>A full mileage-and-expenses toolkit, not just a tracker</h2>
+      <p>Every feature below exists in TrackMile today — grouped by what it's actually for.</p>
+    </div>
+
+    <div class="feat-tabs reveal" id="featTabs">
+      <button class="feat-tab active" data-panel="detect">Automatic detection</button>
+      <button class="feat-tab" data-panel="classify">Classification</button>
+      <button class="feat-tab" data-panel="reports">Reports & money</button>
+      <button class="feat-tab" data-panel="organize">Stay organized</button>
+      <button class="feat-tab" data-panel="privacy2">Privacy & control</button>
+    </div>
+
+    <div class="feat-panels reveal">
+      <div class="feat-panel active" id="panel-detect">
+        <div class="feat-grid">
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17h14M6 17l1.5-6h9L18 17M8 11V7a4 4 0 018 0v4"/></svg></div><h4>Background trip detection</h4><p>Watches for genuine driving using Android's low-power Activity Recognition sensor, not continuous GPS — kicks into full accuracy the moment you're actually moving.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 014 4v2a4 4 0 01-8 0V6a4 4 0 014-4zM6 10v2a6 6 0 0012 0v-2M12 18v4"/></svg></div><h4>Android Auto acceleration</h4><p>Connecting to Android Auto switches straight to fast polling — the quickest way TrackMile can know you're about to drive.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg></div><h4>Heartbeat safety net</h4><p>An independent low-power check every 15–180 seconds (your choice) catches any trip Activity Recognition misses — detection can't silently stop working.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20l-7-4V8l7-4 7 4v8l-7 4z"/></svg></div><h4>Walking vs. driving</h4><p>Recognises when you've parked and walked away — the odometer pauses so a stroll to a shop never gets added to your mileage.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><h4>Auto-end when stationary</h4><p>Ends a trip itself once you've been stopped for a configurable duration — no need to remember to press "end."</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 6v14a2 2 0 002 2h8a2 2 0 002-2V6M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg></div><h4>Three detection modes</h4><p>Passive (automatic), Android Auto only (fastest, zero background polling otherwise), or fully manual — plus a do-not-track schedule for evenings and weekends.</p></div>
+        </div>
+      </div>
+
+      <div class="feat-panel" id="panel-classify">
+        <div class="feat-grid">
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><h4>Saved routes</h4><p>Mark a journey "favourite" once and any future trip starting near it classifies itself — same type, category and purpose, no prompt.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg></div><h4>Work-hours auto-classify</h4><p>Set a Mon–Fri time window; any drive inside it is logged as business automatically.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 12l4-4M4 12l4 4M20 12l-4-4M20 12l-4 4"/></svg></div><h4>Swipe-to-review queue</h4><p>Anything not auto-classified lands in "Needs review" at the top of History — swipe right for business, left for private.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 8l4 4-4 4M7 8l-4 4 4 4M14 4l-4 16"/></svg></div><h4>Mid-journey switching</h4><p>Log an errand partway through a business trip as its own segment, without losing the original journey's classification.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div><h4>Manual trip entry</h4><p>Forgot your phone, or drove before installing TrackMile? Add a past trip by hand — date, times, odometer, purpose — and it behaves exactly like any other journey.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v4H4zM4 12h10v8H4zM18 12h2v8h-2z"/></svg></div><h4>Merge trips</h4><p>Group several legs of a multi-stop or multi-day trip into one collapsible card with a combined total — each leg keeps its own record underneath.</p></div>
+        </div>
+      </div>
+
+      <div class="feat-panel" id="panel-reports">
+        <div class="feat-grid">
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div><h4>HMRC-aware calculator</h4><p>Applies the correct tax-year rate automatically, including the 10,000-mile tier split for cars and vans, and flat rates for motorcycles and bicycles.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6"/></svg></div><h4>PDF, Excel & CSV export</h4><p>A properly formatted PDF report for an employer or accountant, a genuine .xlsx with bold headers, or a plain CSV — pick what the person on the other end needs.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 6l-10 7L2 6M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg></div><h4>One-tap email export</h4><p>Opens a compose window with the file already attached and a default recipient pre-filled — no retyping an accountant's address every month.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><h4>Date-range filters</h4><p>This month, last month, this tax year, or a custom range — applied consistently across the on-screen list and every export.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM4 9h16M9 4v16"/></svg></div><h4>Receipts, not just miles</h4><p>Photograph fuel, parking and toll receipts and link them to a specific trip or log them as general expenses, with a running total and full CSV/Excel export.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M4.9 4.9l4.2 4.2M14.9 14.9l4.2 4.2M2 12h6M16 12h6M4.9 19.1l4.2-4.2M14.9 9.1l4.2-4.2"/></svg></div><h4>Per-trip £ potential</h4><p>The review queue shows what an unclassified trip would be worth as a business mile — split correctly across HMRC tiers if it crosses the 10,000-mile threshold.</p></div>
+        </div>
+      </div>
+
+      <div class="feat-panel" id="panel-organize">
+        <div class="feat-grid">
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 12l4-7h10l4 7M3 12v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6"/></svg></div><h4>Multi-vehicle support</h4><p>Car, van, motorcycle or bicycle, each with its own correct HMRC rate — Statistics breaks totals down by vehicle type automatically.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h4>Automatic place names</h4><p>Journeys reverse-geocode into readable names — "St Asaph to Llandudno" — instead of a generic timestamp.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.5-2V4L9 6m0 14l6-2m-6 2V6m6 12l5.5 2V6L15 4m0 14V4"/></svg></div><h4>Route map thumbnail</h4><p>A small map with start/end pins on every journey — or the actual driven path, breadcrumb by breadcrumb, if detailed tracking is switched on.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg></div><h4>Calendar sync</h4><p>Writes journeys straight to your phone's own calendar — Google, Outlook, or whatever's already syncing — filterable by business, private, or both.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5M4 9a8 8 0 0113.65-5.65M20 15a8 8 0 01-13.65 5.65"/></svg></div><h4>Full backup & restore</h4><p>Every vehicle, journey, favourite and receipt photo, zipped into one file you can save to Drive or email to yourself — restore wipes and replaces everything, with a clear warning first.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10h18M3 10l2-6h14l2 6M5 10v10h14V10"/></svg></div><h4>Undo on delete</h4><p>Delete a journey and a snackbar offers a few seconds to undo before it's actually gone — plus a recovery queue for any trip that started tracking but never got marked finished.</p></div>
+        </div>
+      </div>
+
+      <div class="feat-panel" id="panel-privacy2">
+        <div class="feat-grid">
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg></div><h4>Local-only, always</h4><p>No cloud, no account, no server sync. Every journey lives in a database on your phone, full stop.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><h4>Upfront permission disclosure</h4><p>A plain-English explainer appears before the system's background-location prompt — so you know exactly why it's needed before Android ever asks.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v16h16M4 12h16M4 8h16M4 16h16"/></svg></div><h4>Do-not-track schedule</h4><p>Two independent rules — full days off, and active-hours-only on the rest — so weekends and evenings get zero background checking of any kind.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div><h4>Manual-only mode</h4><p>Prefer zero background activity, full stop? Switch to manual start — nothing runs unless you tap "Start journey" yourself.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><h4>Battery-conscious by design</h4><p>GPS switches on only once real movement is detected, and eases back to a slower poll rate once a trip is confirmed — not always-on tracking.</p></div>
+          <div class="feat-card"><div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-6.219-8.56"/></svg></div><h4>You control every export</h4><p>Nothing leaves the phone unless you tap export or email — there's no background upload of any kind to worry about.</p></div>
         </div>
       </div>
     </div>
-  </section>
 
-  <section id="why">
-    <div class="wrap">
-      <div class="route">
-        <span class="marker">Why people switch</span>
-        <span class="line"></span>
+    <!-- rates -->
+    <div class="rates reveal">
+      <div class="rates-head">
+        <h3>Current HMRC mileage rates, built in</h3>
+        <span class="note">2026/27 tax year · check gov.uk for updates</span>
       </div>
-      <div class="section-head">
-        <h2>Built for the miles that actually cost you money</h2>
-        <p>Three real ways people leave HMRC mileage relief on the table — and how TrackMile closes the gap.</p>
-      </div>
-
-      <div class="persona-list">
-        <div class="persona">
-          <div class="persona-marker"><span class="dot"></span><span class="line"></span></div>
-          <div class="persona-body">
-            <div>
-              <h3>The property portfolio manager</h3>
-              <span class="role">Multiple sites, one van, no time to log anything</span>
-              <p class="story">A morning that starts at the office, takes in a fire-risk assessment at one unit, a contractor meeting at another, and a survey across town, easily becomes four separate journeys. Writing each one down afterwards — or worse, at month-end from memory — means rounding down, or simply forgetting the short hops. TrackMile logs every leg the moment it happens, with nothing to remember.</p>
-              <div class="fm-chips">
-                <span class="fm-chip">Background detection</span>
-                <span class="fm-chip">Multiple short trips a day</span>
-                <span class="fm-chip">Nothing to type</span>
-              </div>
-            </div>
-            <div class="persona-figures">
-              <div class="pf-row"><span class="k">Business miles / year</span><span class="v">9,200 mi</span></div>
-              <div class="pf-row"><span class="k">All under 10,000 mi @ 55p</span><span class="v">£5,060</span></div>
-              <div class="pf-total"><span class="k">Claimable this year</span><span class="v">£5,060</span></div>
-            </div>
-          </div>
+      <div class="rate-grid">
+        <div class="rate-card">
+          <div class="veh"><svg viewBox="0 0 24 24" fill="none" stroke="#122548" stroke-width="2"><path d="M3 12h18M3 12l4-7h10l4 7M3 12v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6"/></svg>Car / Van</div>
+          <div class="amount">55p /mi</div>
+          <div class="cond">First 10,000 business miles</div>
         </div>
-
-        <div class="persona">
-          <div class="persona-marker"><span class="dot"></span><span class="line"></span></div>
-          <div class="persona-body">
-            <div>
-              <h3>The self-employed tradesperson</h3>
-              <span class="role">A different job, a different postcode, every day of the week</span>
-              <p class="story">TrackMile's auto-detected journeys need nothing entered while driving — just a live mile counter — and once you're home, unclassified drives sit in a swipe-to-review queue: right for business, left for private. Set a Mon–Fri working-hours window once, and jobs during the day classify themselves with no prompt at all.</p>
-              <div class="fm-chips">
-                <span class="fm-chip">Work-hours auto-classify</span>
-                <span class="fm-chip">Swipe review queue</span>
-                <span class="fm-chip">No typing while driving</span>
-                <span class="fm-chip">Receipts capture</span>
-              </div>
-            </div>
-            <div class="persona-figures">
-              <div class="pf-row"><span class="k">Business miles / year</span><span class="v">14,500 mi</span></div>
-              <div class="pf-row"><span class="k">First 10,000 mi @ 55p</span><span class="v">£5,500</span></div>
-              <div class="pf-row"><span class="k">Remaining 4,500 mi @ 25p</span><span class="v">£1,125</span></div>
-              <div class="pf-total"><span class="k">Claimable this year</span><span class="v">£6,625</span></div>
-            </div>
-          </div>
+        <div class="rate-card">
+          <div class="veh"><svg viewBox="0 0 24 24" fill="none" stroke="#122548" stroke-width="2"><path d="M3 12h18M3 12l4-7h10l4 7M3 12v6a1 1 0 001 1h1a1 1 0 001-1v-1h12v1a1 1 0 001 1h1a1 1 0 001-1v-6"/></svg>Car / Van</div>
+          <div class="amount">25p /mi</div>
+          <div class="cond">Above 10,000 miles</div>
         </div>
-
-        <div class="persona">
-          <div class="persona-marker"><span class="dot"></span></div>
-          <div class="persona-body">
-            <div>
-              <h3>The mobile sales rep</h3>
-              <span class="role">A different client, a different postcode, every single day</span>
-              <p class="story">Handing over a spreadsheet at month-end is slow for you and slower for whoever has to check it. TrackMile builds the report as you go: HMRC-ready PDF and Excel exports, filtered to an exact date range ("last month" in two taps), and an email export that opens straight into a compose window with the file already attached — addressed to a saved default recipient, no retyping needed.</p>
-              <div class="fm-chips">
-                <span class="fm-chip">One-tap date filters</span>
-                <span class="fm-chip">PDF &amp; Excel export</span>
-                <span class="fm-chip">Saved recipient email</span>
-              </div>
-            </div>
-            <div class="persona-figures">
-              <div class="pf-row"><span class="k">Business miles / year</span><span class="v">18,000 mi</span></div>
-              <div class="pf-row"><span class="k">First 10,000 mi @ 55p</span><span class="v">£5,500</span></div>
-              <div class="pf-row"><span class="k">Remaining 8,000 mi @ 25p</span><span class="v">£2,000</span></div>
-              <div class="pf-total"><span class="k">Claimable this year</span><span class="v">£7,500</span></div>
-            </div>
-          </div>
+        <div class="rate-card">
+          <div class="veh"><svg viewBox="0 0 24 24" fill="none" stroke="#122548" stroke-width="2"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M9 17l3-9h3l3 4M6 17h6l-2-6"/></svg>Motorcycle</div>
+          <div class="amount">24p /mi</div>
+          <div class="cond">Flat rate, no threshold</div>
+        </div>
+        <div class="rate-card">
+          <div class="veh"><svg viewBox="0 0 24 24" fill="none" stroke="#122548" stroke-width="2"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h3l4 8M10 9h4"/></svg>Bicycle</div>
+          <div class="amount">20p /mi</div>
+          <div class="cond">Flat rate, no threshold</div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="features">
-    <div class="wrap">
-      <div class="route">
-        <span class="marker">Everything in the app</span>
-        <span class="line"></span>
-      </div>
-      <div class="section-head">
-        <h2>A full mileage-and-expenses toolkit, not just a tracker</h2>
-        <p>Every feature below exists in TrackMile today, grouped by what it's actually for.</p>
-      </div>
-
-      <div class="feat-tabs" id="featTabs">
-        <button class="feat-tab active" data-panel="detect">Automatic detection</button>
-        <button class="feat-tab" data-panel="classify">Classification</button>
-        <button class="feat-tab" data-panel="reports">Reports &amp; money</button>
-        <button class="feat-tab" data-panel="organize">Stay organised</button>
-        <button class="feat-tab" data-panel="privacy2">Privacy &amp; control</button>
-      </div>
-
-      <div class="feat-panels">
-        <div class="feat-panel active" id="panel-detect">
-          <div class="feat-grid">
-            <div class="feat-card"><h4>Background trip detection</h4><p>Watches for genuine driving using Android's low-power activity sensor, not continuous GPS — switches to full accuracy the moment you're actually moving.</p></div>
-            <div class="feat-card"><h4>Android Auto acceleration</h4><p>Connect to Android Auto and detection sharpens immediately, with zero background battery polling needed to know you're driving.</p></div>
-            <div class="feat-card"><h4>Configurable responsiveness</h4><p>Choose how eagerly TrackMile checks for movement — Fastest, Fast, Balanced, or Battery saver — to suit how you use your phone.</p></div>
-            <div class="feat-card"><h4>Do Not Track schedule</h4><p>Set full days off, or an active-hours window on the days you do want tracking, so evenings and weekends are never recorded by mistake.</p></div>
-          </div>
+<!-- ============ PRIVACY ============ -->
+<section class="privacy" id="privacy">
+  <div class="wrap privacy-grid">
+    <div class="reveal">
+      <span class="tag-eyebrow">Why background location, honestly</span>
+      <h2>Automatic tracking needs location. Here's exactly how it's handled.</h2>
+      <p class="lead">TrackMile requests background location because that's the only way it can notice you're driving without you opening the app first. Google Play applies extra scrutiny to that permission — for good reason — so here's the honest version of what happens with it.</p>
+      <div class="privacy-list">
+        <div class="privacy-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
+          <div><b>Everything stays on your device</b><span>Journeys, receipts, vehicles — one local database, never uploaded anywhere.</span></div>
         </div>
-        <div class="feat-panel" id="panel-classify">
-          <div class="feat-grid">
-            <div class="feat-card"><h4>Work-hours auto-classify</h4><p>Trips during your set working hours are marked business automatically, with nothing to confirm.</p></div>
-            <div class="feat-card"><h4>Swipe-to-review queue</h4><p>Anything outside your working hours waits for a quick decision — swipe right for business, left for private.</p></div>
-            <div class="feat-card"><h4>Mid-journey switching</h4><p>Started as a personal trip but ended up at a client site? Reclassify the journey after the fact in a couple of taps.</p></div>
-            <div class="feat-card"><h4>Vehicle type &amp; correct rate</h4><p>Set up car, van, motorcycle or bicycle as vehicles, mark a default, and the right HMRC rate is applied to every trip on that vehicle automatically.</p></div>
-          </div>
+        <div class="privacy-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+          <div><b>Nothing shared with third parties</b><span>No analytics SDKs profiling your driving, no ad networks, no data broker deals.</span></div>
         </div>
-        <div class="feat-panel" id="panel-reports">
-          <div class="feat-grid">
-            <div class="feat-card"><h4>HMRC rate, applied automatically</h4><p>Tier-by-tier calculation for every vehicle type, including the drop from 55p to 25p after the 10,000-mile car/van threshold.</p></div>
-            <div class="feat-card"><h4>PDF, Excel &amp; CSV export</h4><p>Generate a claim-ready report in whichever format your employer or accountant needs.</p></div>
-            <div class="feat-card"><h4>One-tap date ranges</h4><p>Quick presets for this month, last month, this tax year or last tax year, plus a custom range when you need one.</p></div>
-            <div class="feat-card"><h4>Email export, saved recipient</h4><p>Send a report straight to a saved default address — your accountant or an expenses inbox — with the file already attached.</p></div>
-          </div>
-        </div>
-        <div class="feat-panel" id="panel-organize">
-          <div class="feat-grid">
-            <div class="feat-card"><h4>Full trip history &amp; filters</h4><p>Search and filter every recorded journey, with bulk delete and a "delete all" shortcut when a filter's applied.</p></div>
-            <div class="feat-card"><h4>Editable start time</h4><p>Missed the moment the phone was off? Edit a trip's start date and time by hand after the fact.</p></div>
-            <div class="feat-card"><h4>Calendar sync</h4><p>Push business, private, or all trips into your device calendar automatically, so your day's driving shows up alongside everything else.</p></div>
-            <div class="feat-card"><h4>Automatic place names</h4><p>Journeys are labelled with real place names via reverse geocoding, with a manual retry if a signal drop leaves one blank.</p></div>
-          </div>
-        </div>
-        <div class="feat-panel" id="panel-privacy2">
-          <div class="feat-grid">
-            <div class="feat-card"><h4>Local-first by default</h4><p>Your trip data lives on your device in a local database — no cloud account required to use the app day to day.</p></div>
-            <div class="feat-card"><h4>Location used for one job</h4><p>Background location exists to detect and record trips — nothing more. Full detail on the <a href="privacy.html" style="color:var(--accent-deep); font-weight:700;">privacy page</a>.</p></div>
-            <div class="feat-card"><h4>Optional backup &amp; restore</h4><p>Back up your full trip history if you want to, and restore it cleanly if you change phones.</p></div>
-            <div class="feat-card"><h4>Built to be reliable</h4><p>Crash and stability monitoring catches issues early — about how the app behaves, never about what's in your trips.</p></div>
-          </div>
+        <div class="privacy-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <div><b>You choose how much it watches</b><span>Passive, Android Auto only, or fully manual — including a schedule that switches detection off entirely on weekends.</span></div>
         </div>
       </div>
     </div>
-  </section>
-
-  <section id="faq-trackmile">
-    <div class="wrap">
-      <div class="section-head">
-        <h2>A few common questions</h2>
-      </div>
-      <details class="faq-item" open>
-        <summary>How does it know I'm driving?</summary>
-        <p>TrackMile uses your phone's motion sensors and GPS together to recognise driving-like movement, then confirms it with clear GPS evidence before logging a trip — so a walk to the shops doesn't get counted as a drive.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Does it drain my battery?</summary>
-        <p>Trip detection is designed to run efficiently in the background using the phone's standard activity recognition, rather than keeping GPS on constantly. Testing feedback on real-world battery use is exactly what the closed testing round is for.</p>
-      </details>
-      <details class="faq-item">
-        <summary>What if it misses a trip?</summary>
-        <p>You can add any journey manually in a few seconds, and this is one of the areas we're actively refining ahead of a public release.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Is it only for car mileage?</summary>
-        <p>No — car, van, motorcycle and bicycle are all supported, each with the correct HMRC rate applied automatically.</p>
-      </details>
+    <div class="disclosure-card reveal">
+      <span class="tag-eyebrow">Play Store requirements, met head-on</span>
+      <h4>Background location, done the way Google asks for it</h4>
+      <p>Because TrackMile requests <code>ACCESS_BACKGROUND_LOCATION</code>, three things are true before you ever see the system permission prompt:</p>
+      <ul>
+        <li>A plain-English explainer appears first — why it's needed, what happens without it</li>
+        <li>A hosted privacy policy states exactly what's collected and that it never leaves your phone</li>
+        <li>Nothing is silently assumed — you can decline and still use manual trip entry</li>
+      </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="wrap">
-      <div class="contact-card">
-        <h2 style="color: var(--white);">Be one of the first to try TrackMile</h2>
-        <p style="color: rgba(251,250,246,0.8); margin:0; max-width:56ch;">Closed testing needs a small group of UK drivers who claim mileage regularly — sole traders, tradespeople, or anyone on a mileage allowance at work.</p>
-        <a href="support.html" class="btn btn-accent">Get in touch</a>
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">Questions worth answering upfront</span>
+      <h2>Before you download</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">Will this drain my battery? <span class="plus"></span></button>
+        <div class="faq-a"><p>No — TrackMile doesn't poll GPS continuously. It subscribes to Android's low-power motion sensor and only switches on full-accuracy GPS once it's confident you're actually in a moving vehicle, easing back to a slower check rate once a trip is confirmed. You can also choose a lighter detection mode, or turn detection off entirely outside a schedule you set.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What happens to my data? Is anything sent anywhere? <span class="plus"></span></button>
+        <div class="faq-a"><p>Nothing. TrackMile has no cloud backend and no account system — every journey, receipt and vehicle lives in a local database on your phone. The only time data leaves your device is when you explicitly export or email a report yourself.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if it misses a trip, or gets one wrong? <span class="plus"></span></button>
+        <div class="faq-a"><p>You can always add a trip manually, correct an odometer reading or start time after the fact, or reclassify a journey from History. An "Incomplete trips" recovery section also catches anything that started tracking but never finished, so nothing is silently lost.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Which vehicles does it support? <span class="plus"></span></button>
+        <div class="faq-a"><p>Car, van, motorcycle and bicycle, each with the correct current HMRC rate, and unlimited vehicles per account — Statistics breaks your totals down by vehicle type automatically once you've logged mileage on more than one.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do I need a Google or Microsoft account to use calendar sync or email export? <span class="plus"></span></button>
+        <div class="faq-a"><p>No new account is required. Calendar sync writes to whichever calendar is already set up and syncing on your phone — Google, Outlook, iCloud or otherwise — and email export just opens your existing email app with the report attached.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Will it cost anything? <span class="plus"></span></button>
+        <div class="faq-a"><p>Pricing hasn't been finalised yet — this page will be updated as soon as the Play Store listing is live. The plan is to keep the core tracking and HMRC reporting genuinely usable regardless of how it's monetised.</p></div>
       </div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="cta-final" id="get">
+  <div class="wrap">
+    <span class="tag-eyebrow" style="color:var(--gold-light);">Coming soon</span>
+    <h2>TrackMile is finishing up final testing before launch.</h2>
+    <p>Leave your email and be the first to know the moment it's live on Google Play — no spam, just the one message when it launches.</p>
+    <div class="notify-row">
+      <input type="email" placeholder="you@example.com" aria-label="Email address">
+      <button class="btn btn-primary" id="notifyBtn">Notify me</button>
+    </div>
+    <p class="notify-note" id="notifyNote">This form doesn't send anywhere yet — wire it up to your mailing list of choice before publishing.</p>
+
+    <div class="store-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E3B84E" stroke-width="1.8"><path d="M3 3l18 9-18 9V3z"/></svg>
+      <div class="txt">
+        <div class="small">Coming soon to</div>
+        <div class="big">Google Play</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="wrap">
-    <div class="copy">FIELDWORKS &middot; est. 2026</div>
-    <ul class="foot-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="support.html">Support</a></li>
-      <li><a href="privacy.html">Privacy policy</a></li>
-    </ul>
+    <div class="footer-row">
+      <div class="footer-brand">
+        <svg class="mark" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#E3B84E" fill-opacity="0.15"/>
+          <path d="M8 21L14 11L18 17L24 9" stroke="#E3B84E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        TrackMile
+      </div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a href="#" id="privacyPolicyLink">Privacy Policy</a>
+      </div>
+    </div>
+    <p class="footer-fine">TrackMile is an independent Android app and is not affiliated with, endorsed by, or a product of Google or HMRC. Mileage rates shown reflect published HMRC Approved Mileage Allowance Payments for the 2026/27 tax year and are provided for guidance only — confirm current rates at gov.uk before relying on them for a tax return. Draft site — replace placeholder copy, the store badge, and the privacy-policy link with final assets before publishing.</p>
   </div>
 </footer>
 
 <script>
-  const t = document.getElementById('navToggle');
-  const l = document.getElementById('navLinks');
-  if (t) t.addEventListener('click', () => l.classList.toggle('open'));
+  // Reveal-on-scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced && 'IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    },{threshold:0.12});
+    revealEls.forEach(el=>io.observe(el));
+  } else {
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
 
+  // Feature tabs
   const tabs = document.querySelectorAll('.feat-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(x => x.classList.remove('active'));
-      document.querySelectorAll('.feat-panel').forEach(p => p.classList.remove('active'));
+  const panels = document.querySelectorAll('.feat-panel');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      panels.forEach(p=>p.classList.remove('active'));
       tab.classList.add('active');
-      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      document.getElementById('panel-'+tab.dataset.panel).classList.add('active');
     });
   });
+
+  // App tour tabs
+  const tourTabs = document.querySelectorAll('#tourTabs .feat-tab');
+  const tourPanels = document.querySelectorAll('.tour-panel');
+  tourTabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tourTabs.forEach(t=>t.classList.remove('active'));
+      tourPanels.forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tourpanel-'+tab.dataset.tour).classList.add('active');
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    q.addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Notify button (decorative placeholder — no backend wired up)
+  const notifyBtn = document.getElementById('notifyBtn');
+  const notifyNote = document.getElementById('notifyNote');
+  if(notifyBtn){
+    notifyBtn.addEventListener('click', ()=>{
+      notifyNote.textContent = "Thanks — you'll hear from us the moment TrackMile is live. (Demo only: connect this form to a real mailing list.)";
+    });
+  }
 </script>
+
 </body>
 </html>
