@@ -309,6 +309,41 @@
   .feat-card h4{font-size:15.5px;font-weight:700;margin-bottom:7px;}
   .feat-card p{font-size:13.8px;color:var(--ink-soft);line-height:1.55;}
 
+  /* ---------- Permissions walkthrough ---------- */
+  .perm-warning{
+    display:flex;gap:16px;align-items:flex-start;background:#FCEFE4;border:1px solid #E9C79A;
+    border-radius:var(--radius);padding:22px 24px;margin-bottom:44px;
+  }
+  .perm-warning svg{width:26px;height:26px;flex:none;stroke:#B25E12;margin-top:2px;}
+  .perm-warning h4{font-size:16px;font-weight:700;color:#7A4A0F;margin-bottom:6px;}
+  .perm-warning p{font-size:14px;color:#7A4A0F;line-height:1.6;}
+  .perm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:960px){.perm-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){.perm-grid{grid-template-columns:1fr;}}
+  .perm-card{
+    background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .perm-card.critical{border:2px solid var(--gold);position:relative;}
+  .perm-card-badge{
+    position:absolute;top:12px;right:12px;background:var(--gold);color:var(--navy-deep);
+    font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 9px;border-radius:999px;
+    text-transform:uppercase;letter-spacing:.03em;z-index:2;
+  }
+  .perm-card-shot{background:var(--fog);padding:16px 16px 0;}
+  .perm-card-shot img{width:100%;display:block;border-radius:10px 10px 0 0;border:1px solid var(--line);border-bottom:none;}
+  .perm-card-body{padding:18px 20px 22px;}
+  .perm-card-body .step-lbl{font-family:var(--mono);font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin-bottom:6px;display:block;}
+  .perm-card-body h4{font-size:15.5px;font-weight:700;margin-bottom:7px;}
+  .perm-card-body p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;}
+  .perm-footnote{
+    margin-top:32px;background:var(--fog);border-radius:var(--radius);padding:20px 24px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .perm-footnote svg{width:20px;height:20px;flex:none;stroke:var(--navy);margin-top:2px;}
+  .perm-footnote p{font-size:13.5px;color:var(--ink-soft);line-height:1.6;}
+  .perm-footnote b{color:var(--ink);}
+
   /* ---------- Rates strip ---------- */
   .rates{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:36px;margin-top:56px;}
   .rates-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:26px;}
@@ -502,6 +537,7 @@
       <a href="#why">Why TrackMile</a>
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
+      <a href="#permissions">Permissions</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a href="#get" class="btn btn-primary">Get notified</a>
@@ -899,6 +935,89 @@
   </div>
 </section>
 
+<!-- ============ PERMISSIONS WALKTHROUGH ============ -->
+<section id="permissions">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="tag-eyebrow">The setup screens, honestly</span>
+      <h2>What TrackMile actually asks for, step by step</h2>
+      <p>Five prompts, in the order Android shows them. One of them matters more than the rest — it's flagged below, because getting it wrong is the single most common reason automatic detection doesn't work.</p>
+    </div>
+
+    <div class="perm-warning reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      <div>
+        <h4>If you only read one part of this page, read this</h4>
+        <p>Android splits location permission into two separate steps on purpose. The first popup only offers "While using the app" or "Only this time" — neither of those is enough for automatic detection, because it means TrackMile can only see your location while it's open on screen. To detect a trip starting while your phone's in your pocket, it needs to be set to <b>"Allow all the time"</b> — and Android only lets you set that on a second screen, not the first popup. Miss that second step and the app will seem broken: no trips ever get detected unless you have TrackMile open and staring at the screen while you drive.</p>
+      </div>
+    </div>
+
+    <div class="perm-grid reveal">
+
+      <div class="perm-card">
+        <div class="perm-card-shot"><img src="screenshots/onboarding-permissions-needed.jpg" alt="A few permissions needed screen listing Location and Motion and activity"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Before anything's asked</span>
+          <h4>A plain-English heads-up first</h4>
+          <p>Before Android's own popups appear, TrackMile explains what's coming and why — location data never leaves the device, and the next screens are what will actually grant it.</p>
+        </div>
+      </div>
+
+      <div class="perm-card">
+        <div class="perm-card-shot"><img src="screenshots/onboarding-location-dialog.jpg" alt="Android location permission dialog offering Precise or Approximate, and While using the app, Only this time, or Don't allow"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Step 1 of 2</span>
+          <h4>Location — the first popup</h4>
+          <p>Choose <b>Precise</b> (needed for accurate mileage) and either "While using the app" or "Only this time." This step alone is <i>not</i> enough for background detection — Android deliberately doesn't offer "Allow all the time" here.</p>
+        </div>
+      </div>
+
+      <div class="perm-card critical">
+        <span class="perm-card-badge">This is the one</span>
+        <div class="perm-card-shot"><img src="screenshots/onboarding-location-allow-all-time.jpg" alt="Android system Location permission settings screen with Allow all the time selected"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Step 2 of 2 — required</span>
+          <h4>Location — "Allow all the time"</h4>
+          <p>TrackMile then prompts you to open this system settings screen and switch to <b>Allow all the time</b>. Without this, detection only runs while the app is open on screen — it won't notice a drive starting in the background.</p>
+        </div>
+      </div>
+
+      <div class="perm-card">
+        <div class="perm-card-shot"><img src="screenshots/onboarding-motion-permission.jpg" alt="Allow TrackMile to access your physical activity permission dialog"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Motion &amp; activity</span>
+          <h4>The low-power sensor</h4>
+          <p>This is what lets TrackMile notice "in a vehicle" without GPS running constantly. Declining it doesn't break detection, but it becomes noticeably less battery-efficient, leaning on GPS alone instead.</p>
+        </div>
+      </div>
+
+      <div class="perm-card">
+        <div class="perm-card-shot"><img src="screenshots/onboarding-notification-permission.jpg" alt="Allow TrackMile to send you notifications permission dialog"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Notifications</span>
+          <h4>Optional, but useful</h4>
+          <p>Lets TrackMile tell you when a trip's been detected or ended. Entirely optional — decline it and detection still works exactly the same, you just won't get a nudge.</p>
+        </div>
+      </div>
+
+      <div class="perm-card">
+        <div class="perm-card-shot"><img src="screenshots/onboarding-camera-permission.jpg" alt="Allow TrackMile to take pictures and record video permission dialog"></div>
+        <div class="perm-card-body">
+          <span class="step-lbl">Camera — asked later</span>
+          <h4>Only for receipts</h4>
+          <p>Not part of setup at all — this only appears the first time you photograph a fuel or parking receipt. Skip it and every other feature, including mileage tracking, works exactly the same.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="perm-footnote reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 8v4l3 3M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+      <p><b>Said no to something by mistake?</b> Nothing's locked in — Android Settings → Apps → TrackMile → Permissions lets you change any of these afterward, including switching Location from "While using the app" to "Allow all the time" without reinstalling anything.</p>
+    </div>
+  </div>
+</section>
+
 <!-- ============ FAQ ============ -->
 <section id="faq">
   <div class="wrap">
@@ -910,6 +1029,10 @@
       <div class="faq-item">
         <button class="faq-q">Will this drain my battery? <span class="plus"></span></button>
         <div class="faq-a"><p>No — TrackMile doesn't poll GPS continuously. It subscribes to Android's low-power motion sensor and only switches on full-accuracy GPS once it's confident you're actually in a moving vehicle, easing back to a slower check rate once a trip is confirmed. You can also choose a lighter detection mode, or turn detection off entirely outside a schedule you set.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">I set location to "While using the app" — why isn't anything being detected? <span class="plus"></span></button>
+        <div class="faq-a"><p>That's expected, not a bug — "While using the app" only lets TrackMile see your location while it's open on screen, which means it can't notice a trip starting in your pocket. Automatic detection needs "Allow all the time," set separately in Android Settings → Apps → TrackMile → Permissions → Location. See the <a href="#permissions" style="color:var(--gold);font-weight:600;">Permissions walkthrough</a> above for exactly where that toggle lives — no reinstall needed, it takes effect immediately.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q">What happens to my data? Is anything sent anywhere? <span class="plus"></span></button>
